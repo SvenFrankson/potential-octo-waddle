@@ -21,7 +21,7 @@ class LevelSelection {
     public static Populate(): void {
         $.ajax(
             {
-                url: "./views/level-template.html",
+                url: "./views/level-icon-template.html",
                 success: (template) => {
                     let rowCount: number = 6;
                     let levelsByRow: number = 4;
@@ -37,10 +37,19 @@ class LevelSelection {
                             text = text.replace("{{ id }}", "level-" + index);
                             text = text.replace("{{ level }}", index);
                             level.innerHTML = text;
-                            
+
                             row.appendChild(level);
                         }
                         document.getElementById("levels").appendChild(row);
+                    }
+                    for (let i = 0; i < rowCount; i++) {
+                        for (let j = 0; j < levelsByRow; j++) {
+                            let index = i * rowCount + j;
+                            document.getElementById("level-" + index.toFixed(0)).onclick = () => {
+                                let level = new Level(index);
+                                level.open();
+                            }
+                        }
                     }
                 }
             }
