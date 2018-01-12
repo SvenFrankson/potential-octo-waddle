@@ -3,9 +3,9 @@ class ILevelData {
 class Level {
     constructor(index) {
         this._index = 0;
-        this._width = 1;
-        this._height = 1;
-        this._values = [];
+        this.width = 1;
+        this.height = 1;
+        this.values = [];
         this._index = index;
     }
     open() {
@@ -25,12 +25,58 @@ class Level {
         $.ajax({
             url: "./levels/" + this._index + ".json",
             success: (data) => {
-                this._width = data.width;
-                this._height = data.height;
-                this._values = data.initialValues;
-                alert("Loaded " + this._width + " x " + this._height + " grid.");
+                this.width = data.width;
+                this.height = data.height;
+                this.values = data.initialValues;
+                this.canvas = document.getElementById("render-canvas");
+                this.engine = new BABYLON.Engine(this.canvas, true);
+                this.createScene();
+                this.animate();
+                let instance = new LevelInstance(this);
+                instance.initialize();
             }
         });
+    }
+    createScene() {
+        this.scene = new BABYLON.Scene(this.engine);
+        this.scene.clearColor.copyFromFloats(0, 0, 0, 0);
+        this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 1, BABYLON.Vector3.Zero(), this.scene);
+        this.camera.setPosition(new BABYLON.Vector3(0, 5, -5));
+        this.light = new BABYLON.HemisphericLight("AmbientLight", BABYLON.Axis.Y, this.scene);
+        this.light.diffuse = new BABYLON.Color3(1, 1, 1);
+        this.light.specular = new BABYLON.Color3(1, 1, 1);
+    }
+    animate() {
+        this.engine.runRenderLoop(() => {
+            this.scene.render();
+        });
+        window.addEventListener("resize", () => {
+            this.engine.resize();
+        });
+    }
+}
+class LevelInstance {
+    constructor(level) {
+        this._level = level;
+        this._blackMaterial = new BABYLON.StandardMaterial("BlackMaterial", level.scene);
+        this._blackMaterial.diffuseColor.copyFromFloats(0.2, 0.2, 0.2);
+        this._whiteMaterial = new BABYLON.StandardMaterial("WhiteMaterial", level.scene);
+        this._whiteMaterial.diffuseColor.copyFromFloats(0.8, 0.8, 0.8);
+    }
+    initialize() {
+        for (let j = 0; j < this._level.height; j++) {
+            for (let i = 0; i < this._level.width; i++) {
+                let c = BABYLON.MeshBuilder.CreateBox(i + " " + j, { size: 1 }, this._level.scene);
+                c.position.x = i - (this._level.width - 1) / 2;
+                c.position.z = (this._level.height - 1) / 2 - j;
+                if (this._level.values[i][j] === 0) {
+                    c.material = this._blackMaterial;
+                }
+                else if (this._level.values[i][j] === 1) {
+                    c.material = this._whiteMaterial;
+                }
+            }
+        }
     }
 }
 class LevelSelection {
@@ -83,28 +129,6 @@ class LevelSelection {
 }
 /// <reference path="../lib/babylon.d.ts"/>
 /// <reference path="../lib/jquery.d.ts"/>
-class Main {
-    constructor(canvasElement) {
-        Main.Canvas = document.getElementById(canvasElement);
-        Main.Engine = new BABYLON.Engine(Main.Canvas, true);
-    }
-    createScene() {
-        Main.Scene = new BABYLON.Scene(Main.Engine);
-        Main.Camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 1, BABYLON.Vector3.Zero(), Main.Scene);
-        Main.Camera.setPosition(new BABYLON.Vector3(5, 2, 5));
-        Main.Light = new BABYLON.HemisphericLight("AmbientLight", BABYLON.Axis.Y, Main.Scene);
-        Main.Light.diffuse = new BABYLON.Color3(1, 1, 1);
-        Main.Light.specular = new BABYLON.Color3(1, 1, 1);
-    }
-    animate() {
-        Main.Engine.runRenderLoop(() => {
-            Main.Scene.render();
-        });
-        window.addEventListener("resize", () => {
-            Main.Engine.resize();
-        });
-    }
-}
 window.addEventListener("DOMContentLoaded", () => {
     MainMenu.Open();
 });
