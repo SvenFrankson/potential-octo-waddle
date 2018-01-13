@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "Afritubu";
+	src: url("./afritubu.ttf");
+}
+
 html, body {
     overflow: hidden;
     width: 100%;
@@ -5,6 +10,52 @@ html, body {
     margin: 0;
     padding: 0;
     color: white;
+}
+
+.title {
+    color: white;
+    font-size: 70px;
+    font-family: "Afritubu";
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.btn-main-menu {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 50px;
+    font-family: "Afritubu";
+    margin-top: 4%;
+    margin-bottom: 4%;
+}
+
+.level-icon-cell {
+    height: 100px;
+    margin-bottom: 5%;
+}
+
+.level-icon {
+    padding: 0;
+    border-top: solid 2px white;
+    border-bottom: solid 4px white;
+    border-left: solid 3px white;
+    border-right: solid 1px white;
+    height: 100%;
+}
+
+.level-icon-picture {
+    color: white;
+    font-size: 48px;
+    font-family: "Afritubu";
+    margin: 0;
+    height: 70%;
+    border-bottom: solid 2px white;
+}
+
+.level-icon-score {
+    margin: 0;
+    height: 30%;
 }
 
 #page {

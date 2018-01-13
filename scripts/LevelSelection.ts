@@ -23,24 +23,26 @@ class LevelSelection {
             {
                 url: "./views/level-icon-template.html",
                 success: (template) => {
-                    let rowCount: number = 6;
+                    let rowCount: number = 4;
                     let levelsByRow: number = 4;
                     for (let i = 0; i < rowCount; i++) {
                         let row = document.createElement("div");
+                        document.getElementById("levels").appendChild(row);
                         row.className = "row";
                         for (let j = 0; j < levelsByRow; j++) {
                             let level = document.createElement("div");
-                            level.className = "col-xs-3";
+                            row.appendChild(level);
+                            level.className = "col-xs-3 level-icon-cell";
 
                             let index = (i * rowCount + j).toFixed(0);
                             let text = template;
+                            let templateElement = document.createElement('template');
                             text = text.replace("{{ id }}", "level-" + index);
                             text = text.replace("{{ level }}", index);
-                            level.innerHTML = text;
-
-                            row.appendChild(level);
+                            text = text.trim();
+                            templateElement.innerHTML = text;
+                            level.appendChild(templateElement.content.firstChild)
                         }
-                        document.getElementById("levels").appendChild(row);
                     }
                     for (let i = 0; i < rowCount; i++) {
                         for (let j = 0; j < levelsByRow; j++) {
