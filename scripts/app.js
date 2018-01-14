@@ -34,6 +34,29 @@ class Level {
                 this.animate();
                 let instance = new LevelInstance(this);
                 instance.initialize();
+                this.canvas.onpointerup = () => {
+                    let pick = this.scene.pick(this.scene.pointerX, this.scene.pointerY);
+                    if (pick.hit) {
+                        let ij = instance.ijFromMesh(pick.pickedMesh.parent);
+                        if (ij) {
+                            console.log("IJ = " + JSON.stringify(ij));
+                            instance.flip(ij.i, ij.j, () => {
+                                this.values[ij.j][ij.i] = (this.values[ij.j][ij.i] + 1) % 2;
+                                for (let k = -1; k < 2; k++) {
+                                    for (let l = -1; l < 2; l++) {
+                                        if (!(k === 0 && l === 0)) {
+                                            if (this.values[ij.j + l]) {
+                                                if (isFinite(this.values[ij.j + l][ij.i + k])) {
+                                                    this.values[ij.j + l][ij.i + k] = (this.values[ij.j + l][ij.i + k] + 1) % 2;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
             }
         });
     }
@@ -41,7 +64,7 @@ class Level {
         this.scene = new BABYLON.Scene(this.engine);
         this.scene.clearColor.copyFromFloats(0, 0, 0, 0);
         this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 1, BABYLON.Vector3.Zero(), this.scene);
-        this.camera.setPosition(new BABYLON.Vector3(0, 5, -5));
+        this.camera.setPosition(new BABYLON.Vector3(0, 5, -2));
         this.light = new BABYLON.HemisphericLight("AmbientLight", BABYLON.Axis.Y, this.scene);
         this.light.diffuse = new BABYLON.Color3(1, 1, 1);
         this.light.specular = new BABYLON.Color3(1, 1, 1);
@@ -57,26 +80,83 @@ class Level {
 }
 class LevelInstance {
     constructor(level) {
+        this._k = 0;
+        this._flipAnim = () => {
+            let i = this._flipingI;
+            let j = this._flipingJ;
+            let t = this._tiles[j][i];
+            let tx = 0;
+            if (this._level.values[j][i] === 0) {
+                tx = Math.PI;
+            }
+            t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k, 0, 30);
+            for (let k = -1; k < 2; k++) {
+                for (let l = -1; l < 2; l++) {
+                    if (!(k === 0 && l === 0)) {
+                        if (this._tiles[j + l]) {
+                            let t = this._tiles[j + l][i + k];
+                            if (t) {
+                                tx = 0;
+                                if (this._level.values[j + l][i + k] === 0) {
+                                    tx = Math.PI;
+                                }
+                                t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k - 30, 0, 30);
+                            }
+                        }
+                    }
+                }
+            }
+            this._k++;
+            if (this._k > 60) {
+                this._level.scene.unregisterBeforeRender(this._flipAnim);
+                if (this._flipingCallback) {
+                    this._flipingCallback();
+                }
+            }
+        };
         this._level = level;
-        this._blackMaterial = new BABYLON.StandardMaterial("BlackMaterial", level.scene);
-        this._blackMaterial.diffuseColor.copyFromFloats(0.2, 0.2, 0.2);
-        this._whiteMaterial = new BABYLON.StandardMaterial("WhiteMaterial", level.scene);
-        this._whiteMaterial.diffuseColor.copyFromFloats(0.8, 0.8, 0.8);
+        this._tiles = [];
     }
     initialize() {
         for (let j = 0; j < this._level.height; j++) {
+            this._tiles[j] = [];
             for (let i = 0; i < this._level.width; i++) {
-                let c = BABYLON.MeshBuilder.CreateBox(i + " " + j, { size: 1 }, this._level.scene);
-                c.position.x = i - (this._level.width - 1) / 2;
-                c.position.z = (this._level.height - 1) / 2 - j;
-                if (this._level.values[i][j] === 0) {
-                    c.material = this._blackMaterial;
-                }
-                else if (this._level.values[i][j] === 1) {
-                    c.material = this._whiteMaterial;
+                BABYLON.SceneLoader.ImportMesh("", "./datas/tile.babylon", "", this._level.scene, (meshes) => {
+                    this._tiles[j][i] = new BABYLON.Mesh("Tile-" + i + "-" + j, this._level.scene);
+                    this._tiles[j][i].position.x = i - (this._level.width - 1) / 2;
+                    this._tiles[j][i].position.z = (this._level.height - 1) / 2 - j;
+                    this._tiles[j][i].position.scaleInPlace(1.05);
+                    if (this._level.values[j][i] === 0) {
+                        this._tiles[j][i].rotation.x = Math.PI;
+                    }
+                    meshes.forEach((m) => {
+                        m.parent = this._tiles[j][i];
+                        if (m.name === "Picture") {
+                            if (m.material instanceof BABYLON.StandardMaterial) {
+                                m.material.diffuseTexture = new BABYLON.Texture("./img/" + j + "-" + i + ".png", this._level.scene);
+                            }
+                        }
+                    });
+                });
+            }
+        }
+    }
+    ijFromMesh(mesh) {
+        for (let j = 0; j < this._level.height; j++) {
+            for (let i = 0; i < this._level.width; i++) {
+                if (this._tiles[j][i] === mesh) {
+                    return { j: j, i: i };
                 }
             }
         }
+        return undefined;
+    }
+    flip(i, j, callback) {
+        this._k = 0;
+        this._flipingI = i;
+        this._flipingJ = j;
+        this._flipingCallback = callback;
+        this._level.scene.registerBeforeRender(this._flipAnim);
     }
 }
 class LevelSelection {

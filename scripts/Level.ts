@@ -53,6 +53,36 @@ class Level {
                     this.animate();
                     let instance = new LevelInstance(this);
                     instance.initialize();
+                    this.canvas.onpointerup = () => {
+                        let pick = this.scene.pick(
+                            this.scene.pointerX,
+                            this.scene.pointerY
+                        );
+                        if (pick.hit) {
+                            let ij = instance.ijFromMesh(pick.pickedMesh.parent as BABYLON.Mesh);
+                            if (ij) {
+                                console.log("IJ = " + JSON.stringify(ij));
+                                instance.flip(
+                                    ij.i,
+                                    ij.j,
+                                    () => {
+                                        this.values[ij.j][ij.i] = (this.values[ij.j][ij.i] + 1) % 2;
+                                        for (let k = -1; k < 2; k++) {
+                                            for (let l = -1; l < 2; l++) {
+                                                if (!(k === 0 && l === 0)) {
+                                                    if (this.values[ij.j + l]) {
+                                                        if (isFinite(this.values[ij.j + l][ij.i + k])) {
+                                                            this.values[ij.j + l][ij.i + k] = (this.values[ij.j + l][ij.i + k] + 1) % 2;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    }
                 }
             }
         );
@@ -63,7 +93,7 @@ class Level {
         this.scene.clearColor.copyFromFloats(0, 0, 0, 0);
 
         this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 1, BABYLON.Vector3.Zero(), this.scene);
-        this.camera.setPosition(new BABYLON.Vector3(0, 5, -5));
+        this.camera.setPosition(new BABYLON.Vector3(0, 5, -2));
 
         this.light = new BABYLON.HemisphericLight("AmbientLight", BABYLON.Axis.Y, this.scene);
         this.light.diffuse = new BABYLON.Color3(1, 1, 1);
