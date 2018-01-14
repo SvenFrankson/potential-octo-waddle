@@ -8,7 +8,7 @@ class LevelSelection {
                     Page.Clear();
                     document.getElementById("page").innerHTML = data;
                     
-                    document.getElementById("back-main-menu").onclick = () => {
+                    document.getElementById("back-main-menu").onpointerup = () => {
                         MainMenu.Open();
                     }
 
@@ -34,7 +34,7 @@ class LevelSelection {
                             row.appendChild(level);
                             level.className = "col-xs-3 level-icon-cell";
 
-                            let index = (i * rowCount + j).toFixed(0);
+                            let index = (i * rowCount + j + 1).toFixed(0);
                             let text = template;
                             let templateElement = document.createElement('template');
                             text = text.replace("{{ id }}", "level-" + index);
@@ -46,8 +46,8 @@ class LevelSelection {
                     }
                     for (let i = 0; i < rowCount; i++) {
                         for (let j = 0; j < levelsByRow; j++) {
-                            let index = i * rowCount + j;
-                            document.getElementById("level-" + index.toFixed(0)).onclick = () => {
+                            let index = i * rowCount + j + 1;
+                            document.getElementById("level-" + index.toFixed(0)).onpointerup = () => {
                                 let level = new Level(index);
                                 level.open();
                             }
