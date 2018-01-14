@@ -85,6 +85,11 @@ html, body {
     height: 30%;
 }
 
+.level-icon-star { 
+    height: 80%;
+    margin-top: 2.5%;
+}
+
 #page {
     margin-top: 2.5%;
     height: 90%;

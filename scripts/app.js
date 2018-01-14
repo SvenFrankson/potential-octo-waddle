@@ -14,11 +14,11 @@ class Level {
             success: (data) => {
                 Page.Clear();
                 document.getElementById("page").innerHTML = data;
-                document.getElementById("victory-next").onclick = () => {
+                document.getElementById("victory-next").onpointerup = () => {
                     let level = new Level(this._index + 1);
                     level.open();
                 };
-                document.getElementById("back-main-menu").onclick = () => {
+                document.getElementById("back-main-menu").onpointerup = () => {
                     LevelSelection.Open();
                 };
                 this.initialize();
@@ -80,8 +80,7 @@ class Level {
     victory() {
         this.instance.victory(() => {
             document.getElementById("level-victory-zone").removeAttribute("hidden");
-            document.getElementById("undo").setAttribute("hidden", "");
-            document.getElementById("redo").setAttribute("hidden", "");
+            ScoreManager.setScore(this._index, 3);
         });
     }
     createScene() {
@@ -207,22 +206,36 @@ class LevelInstance {
 }
 class LevelSelection {
     static Open() {
+        let levelSelection = new LevelSelection();
+        levelSelection.open();
+        return levelSelection;
+    }
+    constructor() {
+        this.scores = new Map();
+        for (let i = 0; i < 16; i++) {
+            let index = i + 1;
+            this.scores.set(index, ScoreManager.getScore(index));
+            ;
+        }
+    }
+    open() {
         $.ajax({
             url: "./views/level-selection.html",
             success: (data) => {
                 Page.Clear();
                 document.getElementById("page").innerHTML = data;
-                document.getElementById("back-main-menu").onclick = () => {
+                document.getElementById("back-main-menu").onpointerup = () => {
                     MainMenu.Open();
                 };
-                LevelSelection.Populate();
+                this.populate();
             }
         });
     }
-    static Populate() {
+    populate() {
         $.ajax({
             url: "./views/level-icon-template.html",
             success: (template) => {
+                console.log(this.scores);
                 let rowCount = 4;
                 let levelsByRow = 4;
                 for (let i = 0; i < rowCount; i++) {
@@ -233,11 +246,11 @@ class LevelSelection {
                         let level = document.createElement("div");
                         row.appendChild(level);
                         level.className = "col-xs-3 level-icon-cell";
-                        let index = (i * rowCount + j).toFixed(0);
+                        let index = (i * rowCount + j + 1).toFixed(0);
                         let text = template;
                         let templateElement = document.createElement('template');
-                        text = text.replace("{{ id }}", "level-" + index);
-                        text = text.replace("{{ level }}", index);
+                        text = text.split("{{ id }}").join("level-" + index);
+                        text = text.split("{{ level }}").join(index);
                         text = text.trim();
                         templateElement.innerHTML = text;
                         level.appendChild(templateElement.content.firstChild);
@@ -245,11 +258,16 @@ class LevelSelection {
                 }
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < levelsByRow; j++) {
-                        let index = i * rowCount + j;
-                        document.getElementById("level-" + index.toFixed(0)).onclick = () => {
+                        let index = i * rowCount + j + 1;
+                        document.getElementById("level-" + index.toFixed(0)).onpointerup = () => {
                             let level = new Level(index);
                             level.open();
                         };
+                        let score = this.scores.get(index);
+                        console.log(score);
+                        for (let k = 1; k <= score; k++) {
+                            document.getElementById("level-" + index.toFixed(0) + "-star-" + k).setAttribute("src", "./img/star-yellow.svg");
+                        }
                     }
                 }
             }
@@ -268,7 +286,7 @@ class MainMenu {
             success: (data) => {
                 Page.Clear();
                 document.getElementById("page").innerHTML = data;
-                document.getElementById("level-selection").onclick = () => {
+                document.getElementById("level-selection").onpointerup = () => {
                     LevelSelection.Open();
                 };
             }
@@ -278,5 +296,23 @@ class MainMenu {
 class Page {
     static Clear() {
         document.getElementById("page").innerHTML = "";
+    }
+}
+class ScoreManager {
+    static getScore(level) {
+        let score = localStorage.getItem("score-level-" + level);
+        if (score) {
+            let scoreValue = parseInt(score);
+            if (isFinite(scoreValue)) {
+                return scoreValue;
+            }
+        }
+        return 0;
+    }
+    static setScore(level, score) {
+        let currentScore = ScoreManager.getScore(level);
+        if (isFinite(score) && score > currentScore) {
+            localStorage.setItem("score-level-" + level, score.toFixed());
+        }
     }
 }

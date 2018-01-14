@@ -30,12 +30,12 @@ class Level {
                     Page.Clear();
                     document.getElementById("page").innerHTML = data;
 
-                    document.getElementById("victory-next").onclick = () => {
+                    document.getElementById("victory-next").onpointerup = () => {
                         let level = new Level(this._index + 1);
                         level.open();
                     }
                     
-                    document.getElementById("back-main-menu").onclick = () => {
+                    document.getElementById("back-main-menu").onpointerup = () => {
                         LevelSelection.Open();
                     }
 
@@ -112,8 +112,7 @@ class Level {
         this.instance.victory(
             () => {
                 document.getElementById("level-victory-zone").removeAttribute("hidden");
-                document.getElementById("undo").setAttribute("hidden", "");
-                document.getElementById("redo").setAttribute("hidden", "");
+                ScoreManager.setScore(this._index, 3);
             }
         )
     }

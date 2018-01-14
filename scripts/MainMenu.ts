@@ -8,7 +8,7 @@ class MainMenu {
                     Page.Clear();
                     document.getElementById("page").innerHTML = data;
 
-                    document.getElementById("level-selection").onclick = () => {
+                    document.getElementById("level-selection").onpointerup = () => {
                         LevelSelection.Open();
                     }
                 }
