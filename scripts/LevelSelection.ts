@@ -28,7 +28,7 @@ class LevelSelection {
                     for (let i = 0; i < rowCount; i++) {
                         let row = document.createElement("div");
                         document.getElementById("levels").appendChild(row);
-                        row.className = "row";
+                        row.className = "row level-icon-row";
                         for (let j = 0; j < levelsByRow; j++) {
                             let level = document.createElement("div");
                             row.appendChild(level);

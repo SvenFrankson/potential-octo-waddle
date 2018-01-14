@@ -1,9 +1,25 @@
-<div class="page-zone">
-    <h1 class="title">Level</h1>
+<div class="page-head">
+    <div class="title">Level</div>
 </div>
-<div class="canvas-zone">
+<div class="page-zone">
     <canvas id="render-canvas"></canvas>
+    <div id="level-victory-zone" hidden>
+        <div>
+            <span>turns </span><span>42</span>
+        </div>
+        <div>
+            <span>*</span><span>*</span><span>*</span>
+        </div>
+        <div>
+            <button id="victory-next" class="btn-foot" type="button">next</button>
+        </div>
+    </div>
 </div>
-<div class="page-zone">
-    <button id="back-main-menu" class="btn btn-default" type="button">Back</button>
+<div class="page-foot">
+    <div class="btn-foot-group">
+        <button id="undo" class="btn-foot" type="button">undo</button>
+        <button id="redo" class="btn-foot" type="button">redo</button>
+        <button id="restart" class="btn-foot" type="button">restart</button>
+        <button id="back-main-menu" class="btn-foot" type="button">back</button>
+    </div>
 </div>

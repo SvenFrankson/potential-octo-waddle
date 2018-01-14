@@ -16,8 +16,10 @@ html, body {
     color: white;
     font-size: 70px;
     font-family: "Afritubu";
-    margin-top: 10%;
-    margin-bottom: 10%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .btn-main-menu {
@@ -30,9 +32,34 @@ html, body {
     margin-bottom: 4%;
 }
 
+.btn-foot-group {
+    text-align: center;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.btn-foot {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 50px;
+    font-family: "Afritubu";
+}
+
+.row.level-icon-row {
+    height: 25%;
+    margin: 0px;
+    padding: 2.5%;
+}
+
 .level-icon-cell {
-    height: 100px;
-    margin-bottom: 5%;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
 }
 
 .level-icon {
@@ -61,6 +88,7 @@ html, body {
 #page {
     margin-top: 2.5%;
     height: 90%;
+    padding: 0px;
     background-color: rgb(46, 46, 46)
 }
 
@@ -70,11 +98,36 @@ html, body {
     height: 100%;
 }
 
-.page-zone {
-    text-align: center;
-    margin: 10px;
+.page-head {
+    position: relative;
+    height: 20%;
+    margin: 0px;
+    padding: 0;
 }
 
-.canvas-zone {
-    height: 60%;
+.page-zone {
+    position: relative;
+    height: 65%;
+    margin: 0px;
+    padding: 0;
+    text-align: center;
+}
+
+.page-foot {
+    position: relative;
+    height: 15%;
+    margin: 0px;
+    padding: 0;
+}
+
+#level-victory-zone {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    height: 50%;
+    width: 50%;
+    color: white;
+    font-size: 48px;
+    font-family: "Afritubu";
+    background-color: rgba(0, 0, 0, 0.75)
 }

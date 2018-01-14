@@ -14,6 +14,10 @@ class Level {
             success: (data) => {
                 Page.Clear();
                 document.getElementById("page").innerHTML = data;
+                document.getElementById("victory-next").onclick = () => {
+                    let level = new Level(this._index + 1);
+                    level.open();
+                };
                 document.getElementById("back-main-menu").onclick = () => {
                     LevelSelection.Open();
                 };
@@ -32,15 +36,15 @@ class Level {
                 this.engine = new BABYLON.Engine(this.canvas, true);
                 this.createScene();
                 this.animate();
-                let instance = new LevelInstance(this);
-                instance.initialize();
+                this.instance = new LevelInstance(this);
+                this.instance.initialize();
                 this.canvas.onpointerup = () => {
                     let pick = this.scene.pick(this.scene.pointerX, this.scene.pointerY);
                     if (pick.hit) {
-                        let ij = instance.ijFromMesh(pick.pickedMesh.parent);
+                        let ij = this.instance.ijFromMesh(pick.pickedMesh.parent);
                         if (ij) {
                             console.log("IJ = " + JSON.stringify(ij));
-                            instance.flip(ij.i, ij.j, () => {
+                            this.instance.flip(ij.i, ij.j, () => {
                                 this.values[ij.j][ij.i] = (this.values[ij.j][ij.i] + 1) % 2;
                                 for (let k = -1; k < 2; k++) {
                                     for (let l = -1; l < 2; l++) {
@@ -53,11 +57,31 @@ class Level {
                                         }
                                     }
                                 }
+                                if (this.checkVictory()) {
+                                    this.victory();
+                                }
                             });
                         }
                     }
                 };
             }
+        });
+    }
+    checkVictory() {
+        for (let j = 0; j < this.height; j++) {
+            for (let i = 0; i < this.width; i++) {
+                if (this.values[j][i] === 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    victory() {
+        this.instance.victory(() => {
+            document.getElementById("level-victory-zone").removeAttribute("hidden");
+            document.getElementById("undo").setAttribute("hidden", "");
+            document.getElementById("redo").setAttribute("hidden", "");
         });
     }
     createScene() {
@@ -82,6 +106,8 @@ class LevelInstance {
     constructor(level) {
         this._k = 0;
         this._flipAnim = () => {
+            let length = 40;
+            let halfLength = length / 2;
             let i = this._flipingI;
             let j = this._flipingJ;
             let t = this._tiles[j][i];
@@ -89,7 +115,10 @@ class LevelInstance {
             if (this._level.values[j][i] === 0) {
                 tx = Math.PI;
             }
-            t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k, 0, 30);
+            t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+            let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+            s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
+            t.scaling.copyFromFloats(s, s, s);
             for (let k = -1; k < 2; k++) {
                 for (let l = -1; l < 2; l++) {
                     if (!(k === 0 && l === 0)) {
@@ -100,17 +129,29 @@ class LevelInstance {
                                 if (this._level.values[j + l][i + k] === 0) {
                                     tx = Math.PI;
                                 }
-                                t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k - 30, 0, 30);
+                                t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                                let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                                s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
+                                t.scaling.copyFromFloats(s, s, s);
                             }
                         }
                     }
                 }
             }
             this._k++;
-            if (this._k > 60) {
+            if (this._k > length) {
                 this._level.scene.unregisterBeforeRender(this._flipAnim);
                 if (this._flipingCallback) {
                     this._flipingCallback();
+                }
+            }
+        };
+        this._victoryAnim = () => {
+            this._k++;
+            if (this._k > 60) {
+                this._level.scene.unregisterBeforeRender(this._victoryAnim);
+                if (this._victoryCallback) {
+                    this._victoryCallback();
                 }
             }
         };
@@ -158,6 +199,11 @@ class LevelInstance {
         this._flipingCallback = callback;
         this._level.scene.registerBeforeRender(this._flipAnim);
     }
+    victory(callback) {
+        this._k = 0;
+        this._victoryCallback = callback;
+        this._level.scene.registerBeforeRender(this._victoryAnim);
+    }
 }
 class LevelSelection {
     static Open() {
@@ -182,7 +228,7 @@ class LevelSelection {
                 for (let i = 0; i < rowCount; i++) {
                     let row = document.createElement("div");
                     document.getElementById("levels").appendChild(row);
-                    row.className = "row";
+                    row.className = "row level-icon-row";
                     for (let j = 0; j < levelsByRow; j++) {
                         let level = document.createElement("div");
                         row.appendChild(level);

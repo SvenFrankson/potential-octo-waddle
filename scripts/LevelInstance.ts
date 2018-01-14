@@ -65,6 +65,8 @@ class LevelInstance {
     private _flipingCallback: () => void;
     private _k: number = 0;
     private _flipAnim = () => {
+        let length = 40;
+        let halfLength = length / 2;
         let i = this._flipingI;
         let j = this._flipingJ;
         let t = this._tiles[j][i];
@@ -73,7 +75,10 @@ class LevelInstance {
         if (this._level.values[j][i] === 0) {
             tx = Math.PI;
         }
-        t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k, 0, 30);
+        t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+        let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+        s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
+        t.scaling.copyFromFloats(s, s, s);
 
         for (let k = -1; k < 2; k++) {
             for (let l = -1; l < 2; l++) {
@@ -85,7 +90,10 @@ class LevelInstance {
                             if (this._level.values[j + l][i + k] === 0) {
                                 tx = Math.PI;
                             }
-                            t.rotation.x = tx + Math.PI / 30 * BABYLON.MathTools.Clamp(this._k - 30, 0, 30);
+                            t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                            let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                            s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
+                            t.scaling.copyFromFloats(s, s, s);
                         }
                     }
                 }
@@ -93,10 +101,27 @@ class LevelInstance {
         }
 
         this._k++;
-        if (this._k > 60) {
+        if (this._k > length) {
             this._level.scene.unregisterBeforeRender(this._flipAnim);
             if (this._flipingCallback) {
                 this._flipingCallback();
+            }
+        }
+    }
+
+    public victory(callback: () => void): void {
+        this._k = 0;
+        this._victoryCallback = callback;
+        this._level.scene.registerBeforeRender(this._victoryAnim);
+    }
+
+    private _victoryCallback: () => void;
+    private _victoryAnim = () => {
+        this._k++;
+        if (this._k > 60) {
+            this._level.scene.unregisterBeforeRender(this._victoryAnim);
+            if (this._victoryCallback) {
+                this._victoryCallback();
             }
         }
     }
