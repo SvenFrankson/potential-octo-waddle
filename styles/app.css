@@ -128,11 +128,33 @@ html, body {
 #level-victory-zone {
     position: absolute;
     top: 25%;
-    left: 25%;
+    left: 12.5%;
     height: 50%;
-    width: 50%;
+    width: 75%;
     color: white;
     font-size: 48px;
     font-family: "Afritubu";
-    background-color: rgba(0, 0, 0, 0.75)
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 50px;
+}
+
+#level-victory-turns {
+    position: relative;
+    height: 30%;
+    margin: 0px;
+    padding: 0;
+}
+
+#level-victory-score {
+    position: relative;
+    height: 40%;
+    margin: 0px;
+    padding: 0;
+}
+
+#level-victory-foot {
+    position: relative;
+    height: 30%;
+    margin: 0px;
+    padding: 0;
 }
