@@ -43,7 +43,6 @@ class Level {
                     if (pick.hit) {
                         let ij = this.instance.ijFromMesh(pick.pickedMesh.parent);
                         if (ij) {
-                            console.log("IJ = " + JSON.stringify(ij));
                             this.instance.flip(ij.i, ij.j, () => {
                                 this.values[ij.j][ij.i] = (this.values[ij.j][ij.i] + 1) % 2;
                                 for (let k = -1; k < 2; k++) {
@@ -78,6 +77,7 @@ class Level {
         return true;
     }
     victory() {
+        this.canvas.onpointerup = undefined;
         this.instance.victory(() => {
             document.getElementById("level-victory-zone").removeAttribute("hidden");
             ScoreManager.setScore(this._index, 3);
@@ -103,6 +103,7 @@ class Level {
 }
 class LevelInstance {
     constructor(level) {
+        this._isFliping = false;
         this._k = 0;
         this._flipAnim = () => {
             let length = 40;
@@ -139,6 +140,7 @@ class LevelInstance {
             }
             this._k++;
             if (this._k > length) {
+                this._isFliping = false;
                 this._level.scene.unregisterBeforeRender(this._flipAnim);
                 if (this._flipingCallback) {
                     this._flipingCallback();
@@ -192,11 +194,17 @@ class LevelInstance {
         return undefined;
     }
     flip(i, j, callback) {
-        this._k = 0;
-        this._flipingI = i;
-        this._flipingJ = j;
-        this._flipingCallback = callback;
-        this._level.scene.registerBeforeRender(this._flipAnim);
+        if (this._isFliping) {
+            return;
+        }
+        else {
+            this._isFliping = true;
+            this._k = 0;
+            this._flipingI = i;
+            this._flipingJ = j;
+            this._flipingCallback = callback;
+            this._level.scene.registerBeforeRender(this._flipAnim);
+        }
     }
     victory(callback) {
         this._k = 0;

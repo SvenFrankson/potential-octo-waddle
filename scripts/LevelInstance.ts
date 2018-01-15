@@ -53,13 +53,20 @@ class LevelInstance {
     }
 
     public flip(i: number, j: number, callback: () => void): void {
-        this._k = 0;
-        this._flipingI = i;
-        this._flipingJ = j;
-        this._flipingCallback = callback;
-        this._level.scene.registerBeforeRender(this._flipAnim);
+        if (this._isFliping) {
+            return;
+        }
+        else {
+            this._isFliping = true;
+            this._k = 0;
+            this._flipingI = i;
+            this._flipingJ = j;
+            this._flipingCallback = callback;
+            this._level.scene.registerBeforeRender(this._flipAnim);
+        }
     }
 
+    private _isFliping: boolean = false;
     private _flipingI: number;
     private _flipingJ: number;
     private _flipingCallback: () => void;
@@ -102,6 +109,7 @@ class LevelInstance {
 
         this._k++;
         if (this._k > length) {
+            this._isFliping = false;
             this._level.scene.unregisterBeforeRender(this._flipAnim);
             if (this._flipingCallback) {
                 this._flipingCallback();

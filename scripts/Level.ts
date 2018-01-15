@@ -67,7 +67,6 @@ class Level {
                         if (pick.hit) {
                             let ij = this.instance.ijFromMesh(pick.pickedMesh.parent as BABYLON.Mesh);
                             if (ij) {
-                                console.log("IJ = " + JSON.stringify(ij));
                                 this.instance.flip(
                                     ij.i,
                                     ij.j,
@@ -109,6 +108,7 @@ class Level {
     }
 
     public victory(): void {
+        this.canvas.onpointerup = undefined;
         this.instance.victory(
             () => {
                 document.getElementById("level-victory-zone").removeAttribute("hidden");
