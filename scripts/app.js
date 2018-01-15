@@ -158,8 +158,10 @@ class LevelInstance {
         };
         this._level = level;
         this._tiles = [];
+        this._particleSystem = new ParticleManager();
     }
     initialize() {
+        this._particleSystem.initialize(this._level.scene);
         for (let j = 0; j < this._level.height; j++) {
             this._tiles[j] = [];
             for (let i = 0; i < this._level.width; i++) {
@@ -193,6 +195,15 @@ class LevelInstance {
         }
         return undefined;
     }
+    pickIJAtPointer(callback) {
+        let pick = this._level.scene.pick(this._level.scene.pointerX, this._level.scene.pointerY);
+        if (pick.hit) {
+            let ij = this.ijFromMesh(pick.pickedMesh.parent);
+            if (ij) {
+                callback(ij.i, ij.j);
+            }
+        }
+    }
     flip(i, j, callback) {
         if (this._isFliping) {
             return;
@@ -210,6 +221,9 @@ class LevelInstance {
         this._k = 0;
         this._victoryCallback = callback;
         this._level.scene.registerBeforeRender(this._victoryAnim);
+        this._level.scene.registerBeforeRender(() => {
+            this._particleSystem.pop((new BABYLON.Vector3(Math.random() - 0.5, -2, Math.random() - 0.5)).scaleInPlace(6), new BABYLON.Vector3(0, 20, 0));
+        });
     }
 }
 class LevelSelection {
@@ -304,6 +318,68 @@ class MainMenu {
 class Page {
     static Clear() {
         document.getElementById("page").innerHTML = "";
+    }
+}
+class ParticleManager {
+    constructor() {
+        this._maxParticles = 40;
+        this._maxLifeTime = 10;
+        this._deltaPos = BABYLON.Vector3.Zero();
+        this._update = () => {
+            let deltaTime = this.scene.getEngine().getDeltaTime() / 1000;
+            for (let i = 0; i < this._particles.length && i < this._velocities.length && i < this._lives.length; i++) {
+                this._deltaPos.copyFrom(this._velocities[i]);
+                this._deltaPos.scaleInPlace(deltaTime);
+                this._particles[i].position.addInPlace(this._deltaPos);
+                this._lives[i] += deltaTime;
+            }
+            let i = 0;
+            while (i < this._particles.length && i < this._velocities.length && i < this._lives.length) {
+                if (this._lives[i] > this._maxLifeTime) {
+                    let particle = this._particles.splice(i, 1);
+                    if (particle[0]) {
+                        particle[0].dispose();
+                    }
+                    this._velocities.splice(i, 1);
+                    this._particles.splice(i, 1);
+                }
+                else {
+                    i++;
+                }
+            }
+        };
+        this._particles = [];
+        this._velocities = [];
+        this._lives = [];
+    }
+    get scene() {
+        if (this._template) {
+            return this._template.getScene();
+        }
+        return null;
+    }
+    initialize(scene) {
+        this._template = BABYLON.MeshBuilder.CreatePlane("particleTemplate", { width: 0.1, height: 2 }, scene);
+        this.scene.registerBeforeRender(this._update);
+    }
+    pop(position, velocity) {
+        let particle = this._template.createInstance("particle");
+        particle.position.copyFrom(position);
+        this._particles.push(particle);
+        this._velocities.push(velocity);
+        this._lives.push(0);
+        while (this._particles.length > this._maxParticles) {
+            let particle = this._particles.splice(0, 1);
+            if (particle[0]) {
+                particle[0].dispose();
+            }
+        }
+        while (this._velocities.length > this._maxParticles) {
+            this._velocities.splice(0, 1);
+        }
+        while (this._lives.length > this._maxParticles) {
+            this._lives.splice(0, 1);
+        }
     }
 }
 class ScoreManager {

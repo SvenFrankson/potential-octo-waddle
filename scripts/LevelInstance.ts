@@ -2,13 +2,16 @@ class LevelInstance {
 
     private _level: Level;
     private _tiles: BABYLON.Mesh[][];
+    private _particleSystem: ParticleManager;
 
     constructor(level: Level) {
         this._level = level;
         this._tiles = [];
+        this._particleSystem = new ParticleManager();
     }
 
     public initialize(): void {
+        this._particleSystem.initialize(this._level.scene);
         for (let j = 0; j < this._level.height; j++) {
             this._tiles[j] = [];
             for (let i = 0; i < this._level.width; i++) {
@@ -50,6 +53,19 @@ class LevelInstance {
             }
         }
         return undefined;
+    }
+
+    public pickIJAtPointer(callback: (i: number, j: number) => void): void {
+        let pick = this._level.scene.pick(
+            this._level.scene.pointerX,
+            this._level.scene.pointerY
+        );
+        if (pick.hit) {
+            let ij = this.ijFromMesh(pick.pickedMesh.parent as BABYLON.Mesh);
+            if (ij) {
+                callback(ij.i, ij.j);
+            }
+        }
     }
 
     public flip(i: number, j: number, callback: () => void): void {
@@ -121,6 +137,14 @@ class LevelInstance {
         this._k = 0;
         this._victoryCallback = callback;
         this._level.scene.registerBeforeRender(this._victoryAnim);
+        this._level.scene.registerBeforeRender(
+            () => {
+                this._particleSystem.pop(
+                    (new BABYLON.Vector3(Math.random() - 0.5, - 2, Math.random() - 0.5)).scaleInPlace(6),
+                    new BABYLON.Vector3(0, 20, 0)
+                )
+            }
+        )
     }
 
     private _victoryCallback: () => void;
