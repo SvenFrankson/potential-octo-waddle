@@ -24,26 +24,36 @@ html, body {
 
 .btn-main-menu {
     color: white;
-    background: none;
-    border: none;
-    font-size: 50px;
+    font-size: 7vmin;
     font-family: "Afritubu";
-    margin-top: 4%;
-    margin-bottom: 4%;
+    width: 80%;
+    height: 70%;
+    margin: 8%;
+    padding: 0px;
+    background: url("../img/button.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .btn-foot {
     color: white;
-    font-size: 5vmin;
     font-family: "Afritubu";
     width: 40%;
-    height: 50%;
+    height: 60%;
+    font-size: 65px;
     margin: 4%;
-    padding: 0;
+    padding: 0px;
     background: url("../img/button.svg");
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     border: none;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .row.level-icon-row {
@@ -82,7 +92,7 @@ html, body {
 }
 
 .level-icon-star { 
-    height: 80%;
+    height: 60%;
     margin-top: 2.5%;
 }
 
@@ -120,13 +130,14 @@ html, body {
     height: 20%;
     margin: 0px;
     padding: 0;
+    text-align: center;
 }
 
 #level-victory-zone {
     position: absolute;
-    top: 25%;
+    top: 15%;
     left: 12.5%;
-    height: 50%;
+    height: 60%;
     width: 75%;
     color: white;
     font-size: 48px;
@@ -137,7 +148,7 @@ html, body {
 
 #level-victory-turns {
     position: relative;
-    height: 30%;
+    height: 25%;
     margin: 0px;
     padding: 0;
 }
@@ -151,7 +162,7 @@ html, body {
 
 #level-victory-foot {
     position: relative;
-    height: 30%;
+    height: 35%;
     margin: 0px;
     padding: 0;
 }
