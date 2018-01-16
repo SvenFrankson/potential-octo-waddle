@@ -28,9 +28,11 @@ class LevelInstance {
                         if (this._level.values[j][i] === 0) {
                             this._tiles[j][i].rotation.x = Math.PI;
                         }
+                        this._tiles[j][i].freezeWorldMatrix();
                         meshes.forEach(
                             (m) => {
                                 m.parent = this._tiles[j][i];
+                                m.freezeWorldMatrix();
                                 if (m.name === "Picture") {
                                     if (m.material instanceof BABYLON.StandardMaterial) {
                                         m.material.diffuseTexture = new BABYLON.Texture("./img/" + j + "-" + i + ".png", this._level.scene);
@@ -102,6 +104,12 @@ class LevelInstance {
         let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
         s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
         t.scaling.copyFromFloats(s, s, s);
+        t.freezeWorldMatrix();
+        t.getChildMeshes().forEach(
+            (m) => {
+                m.freezeWorldMatrix();
+            }
+        )
 
         for (let k = -1; k < 2; k++) {
             for (let l = -1; l < 2; l++) {
@@ -117,6 +125,12 @@ class LevelInstance {
                             let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
                             s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
                             t.scaling.copyFromFloats(s, s, s);
+                            t.freezeWorldMatrix();
+                            t.getChildMeshes().forEach(
+                                (m) => {
+                                    m.freezeWorldMatrix();
+                                }
+                            )
                         }
                     }
                 }
@@ -150,7 +164,7 @@ class LevelInstance {
     private _victoryCallback: () => void;
     private _victoryAnim = () => {
         this._k++;
-        if (this._k > 60) {
+        if (this._k > 120) {
             this._level.scene.unregisterBeforeRender(this._victoryAnim);
             if (this._victoryCallback) {
                 this._victoryCallback();

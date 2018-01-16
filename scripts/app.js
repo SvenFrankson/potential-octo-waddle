@@ -119,6 +119,10 @@ class LevelInstance {
             let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
             s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
             t.scaling.copyFromFloats(s, s, s);
+            t.freezeWorldMatrix();
+            t.getChildMeshes().forEach((m) => {
+                m.freezeWorldMatrix();
+            });
             for (let k = -1; k < 2; k++) {
                 for (let l = -1; l < 2; l++) {
                     if (!(k === 0 && l === 0)) {
@@ -133,6 +137,10 @@ class LevelInstance {
                                 let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
                                 s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
                                 t.scaling.copyFromFloats(s, s, s);
+                                t.freezeWorldMatrix();
+                                t.getChildMeshes().forEach((m) => {
+                                    m.freezeWorldMatrix();
+                                });
                             }
                         }
                     }
@@ -149,7 +157,7 @@ class LevelInstance {
         };
         this._victoryAnim = () => {
             this._k++;
-            if (this._k > 60) {
+            if (this._k > 120) {
                 this._level.scene.unregisterBeforeRender(this._victoryAnim);
                 if (this._victoryCallback) {
                     this._victoryCallback();
@@ -173,8 +181,10 @@ class LevelInstance {
                     if (this._level.values[j][i] === 0) {
                         this._tiles[j][i].rotation.x = Math.PI;
                     }
+                    this._tiles[j][i].freezeWorldMatrix();
                     meshes.forEach((m) => {
                         m.parent = this._tiles[j][i];
+                        m.freezeWorldMatrix();
                         if (m.name === "Picture") {
                             if (m.material instanceof BABYLON.StandardMaterial) {
                                 m.material.diffuseTexture = new BABYLON.Texture("./img/" + j + "-" + i + ".png", this._level.scene);
@@ -359,7 +369,16 @@ class ParticleManager {
         return null;
     }
     initialize(scene) {
-        this._template = BABYLON.MeshBuilder.CreatePlane("particleTemplate", { width: 0.1, height: 2 }, scene);
+        this._template = BABYLON.MeshBuilder.CreatePlane("particleTemplate", { width: 0.05, height: 1 }, scene);
+        let particleMaterial = new BABYLON.StandardMaterial("particleMaterial", scene);
+        particleMaterial.specularColor.copyFromFloats(0, 0, 0);
+        particleMaterial.diffuseTexture = new BABYLON.Texture("./img/particle.png", scene);
+        particleMaterial.diffuseTexture.hasAlpha = true;
+        particleMaterial.useAlphaFromDiffuseTexture = true;
+        particleMaterial.emissiveColor.copyFromFloats(1, 1, 1);
+        particleMaterial.alpha = 0.5;
+        this._template.material = particleMaterial;
+        this._template.position.z = -42;
         this.scene.registerBeforeRender(this._update);
     }
     pop(position, velocity) {

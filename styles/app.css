@@ -14,7 +14,7 @@ html, body {
 
 .title {
     color: white;
-    font-size: 70px;
+    font-size: 12vmin;
     font-family: "Afritubu";
     position: absolute;
     top: 50%;
@@ -46,8 +46,10 @@ html, body {
     color: white;
     background: none;
     border: none;
-    font-size: 50px;
+    font-size: 8vmin;
     font-family: "Afritubu";
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .row.level-icon-row {

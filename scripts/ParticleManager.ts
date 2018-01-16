@@ -20,7 +20,16 @@ class ParticleManager {
     }
 
     public initialize(scene: BABYLON.Scene) {
-        this._template = BABYLON.MeshBuilder.CreatePlane("particleTemplate", {width: 0.1, height: 2}, scene);
+        this._template = BABYLON.MeshBuilder.CreatePlane("particleTemplate", {width: 0.05, height: 1}, scene);
+        let particleMaterial = new BABYLON.StandardMaterial("particleMaterial", scene);
+        particleMaterial.specularColor.copyFromFloats(0, 0, 0);
+        particleMaterial.diffuseTexture = new BABYLON.Texture("./img/particle.png", scene);
+        particleMaterial.diffuseTexture.hasAlpha = true;
+        particleMaterial.useAlphaFromDiffuseTexture = true;
+        particleMaterial.emissiveColor.copyFromFloats(1, 1, 1);
+        particleMaterial.alpha = 0.5;
+        this._template.material = particleMaterial;
+        this._template.position.z = -42;
         this.scene.registerBeforeRender(this._update);
     }
 
