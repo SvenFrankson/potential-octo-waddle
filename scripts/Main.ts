@@ -41,5 +41,6 @@ window.addEventListener("DOMContentLoaded", () => {
     main.createScene();
     main.animate();
     main.guiTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUITexture");
+    main.guiTexture.idealHeight = 1920;
     MainMenu.Open(main.guiTexture);
 });
