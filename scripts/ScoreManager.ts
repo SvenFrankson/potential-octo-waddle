@@ -17,4 +17,10 @@ class ScoreManager {
             localStorage.setItem("score-level-" + level, score.toFixed());
         }
     }
+
+    public static ClearScore(): void {
+        for (let i = 1; i <= 16; i++) {
+            localStorage.setItem("score-level-" + i, "0");
+        }
+    }
 }

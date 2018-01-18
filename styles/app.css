@@ -13,13 +13,14 @@ html, body {
 }
 
 .title {
-    color: white;
-    font-size: 12vmin;
-    font-family: "Afritubu";
     position: absolute;
+    color: white;
+    font-size: 10vmin;
+    font-family: "Afritubu";
+    width: 100%;
     top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
 }
 
 .btn-main-menu {
@@ -43,8 +44,7 @@ html, body {
     color: white;
     font-family: "Afritubu";
     width: 40%;
-    height: 60%;
-    font-size: 65px;
+    font-size: 55px;
     margin: 4%;
     padding: 0px;
     background: url("../img/button.svg");
@@ -92,7 +92,7 @@ html, body {
 }
 
 .level-icon-star { 
-    height: 60%;
+    height: 80%;
     margin-top: 2.5%;
 }
 
@@ -115,6 +115,7 @@ html, body {
     height: 20%;
     margin: 0px;
     padding: 0;
+    text-align: center;
 }
 
 .page-zone {
@@ -148,7 +149,7 @@ html, body {
 
 #level-victory-turns {
     position: relative;
-    height: 25%;
+    height: 20%;
     margin: 0px;
     padding: 0;
 }
@@ -162,7 +163,7 @@ html, body {
 
 #level-victory-foot {
     position: relative;
-    height: 35%;
+    height: 40%;
     margin: 0px;
     padding: 0;
 }

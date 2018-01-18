@@ -2,6 +2,7 @@ class ILevelData {
     width: number;
     height: number;
     initialValues: number[][];
+    best: number;
 }
 
 class Level {
@@ -11,6 +12,8 @@ class Level {
     public height: number = 1;
     public values: number[][] = [];
     public instance: LevelInstance;
+    public turns: number;
+    public best: number;
 
     constructor(index: number) {
         this._index = index;
@@ -29,9 +32,15 @@ class Level {
                 success: (data) => {
                     Page.Clear();
                     document.getElementById("page").innerHTML = data;
+                    document.getElementById("level-index").innerText = this._index.toFixed(0);
 
                     document.getElementById("victory-next").onpointerup = () => {
                         let level = new Level(this._index + 1);
+                        level.open();
+                    }
+
+                    document.getElementById("restart").onpointerup = () => {
+                        let level = new Level(this._index);
                         level.open();
                     }
                     
@@ -50,9 +59,11 @@ class Level {
             {
                 url: "./levels/" + this._index + ".json",
                 success: (data: ILevelData) => {
+                    this.turns = 0;
                     this.width = data.width;
                     this.height = data.height;
                     this.values = data.initialValues;
+                    this.best = data.best;
                     this.canvas = document.getElementById("render-canvas") as HTMLCanvasElement;
                     this.engine = new BABYLON.Engine(this.canvas, true);
                     this.createScene();
@@ -83,6 +94,7 @@ class Level {
                                                 }
                                             }
                                         }
+                                        this.turns++;
                                         if (this.checkVictory()) {
                                             this.victory();
                                         }
@@ -109,10 +121,23 @@ class Level {
 
     public victory(): void {
         this.canvas.onpointerup = undefined;
+        let score = 0;
+        if (this.turns <= this.best) {
+            score = 3;
+        } else if (this.turns <= this.best * 2) {
+            score = 2;
+        } else {
+            score = 1;
+        }
         this.instance.victory(
             () => {
                 document.getElementById("level-victory-zone").removeAttribute("hidden");
-                ScoreManager.setScore(this._index, 3);
+                document.getElementById("victory-score").innerText = score.toFixed(0);
+                for (let k = 1; k <= score; k++) {
+                    console.error(".");
+                    document.getElementById("victory-star-" + k).setAttribute("src", "./img/star-yellow.svg");
+                }
+                ScoreManager.setScore(this._index, score);
             }
         )
     }
