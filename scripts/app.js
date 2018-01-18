@@ -138,8 +138,8 @@ class LevelInstance {
             if (this._level.values[j][i] === 0) {
                 tx = Math.PI;
             }
-            t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k, 0, halfLength);
-            let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+            t.rotation.x = tx + Math.PI / halfLength * BABYLON.Scalar.Clamp(this._k, 0, halfLength);
+            let s = BABYLON.Scalar.Clamp(this._k, 0, halfLength);
             s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
             t.scaling.copyFromFloats(s, s, s);
             t.freezeWorldMatrix();
@@ -156,8 +156,8 @@ class LevelInstance {
                                 if (this._level.values[j + l][i + k] === 0) {
                                     tx = Math.PI;
                                 }
-                                t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
-                                let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                                t.rotation.x = tx + Math.PI / halfLength * BABYLON.Scalar.Clamp(this._k - halfLength, 0, halfLength);
+                                let s = BABYLON.Scalar.Clamp(this._k - halfLength, 0, halfLength);
                                 s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
                                 t.scaling.copyFromFloats(s, s, s);
                                 t.freezeWorldMatrix();
@@ -280,7 +280,7 @@ class LevelSelection {
                 Page.Clear();
                 document.getElementById("page").innerHTML = data;
                 document.getElementById("back-main-menu").onpointerup = () => {
-                    MainMenu.Open();
+                    MainMenu.Open(undefined);
                 };
                 this.populate();
             }
@@ -330,22 +330,40 @@ class LevelSelection {
     }
 }
 /// <reference path="../lib/babylon.d.ts"/>
+/// <reference path="../lib/babylon.gui.d.ts"/>
 /// <reference path="../lib/jquery.d.ts"/>
+class Main {
+    createScene() {
+        this.scene = new BABYLON.Scene(this.engine);
+        this.scene.clearColor.copyFromFloats(0, 0, 0, 0);
+        this.camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 1, BABYLON.Vector3.Zero(), this.scene);
+        this.camera.setPosition(new BABYLON.Vector3(0, 5, -2));
+        this.light = new BABYLON.HemisphericLight("AmbientLight", BABYLON.Axis.Y, this.scene);
+        this.light.diffuse = new BABYLON.Color3(1, 1, 1);
+        this.light.specular = new BABYLON.Color3(1, 1, 1);
+    }
+    animate() {
+        this.engine.runRenderLoop(() => {
+            this.scene.render();
+        });
+        window.addEventListener("resize", () => {
+            this.engine.resize();
+        });
+    }
+}
 window.addEventListener("DOMContentLoaded", () => {
-    MainMenu.Open();
+    let main = new Main();
+    main.canvas = document.getElementById("render-canvas");
+    main.engine = new BABYLON.Engine(main.canvas, true);
+    main.createScene();
+    main.animate();
+    main.guiTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUITexture");
+    MainMenu.Open(main.guiTexture);
 });
 class MainMenu {
-    static Open() {
-        $.ajax({
-            url: "./views/main-menu.html",
-            success: (data) => {
-                Page.Clear();
-                document.getElementById("page").innerHTML = data;
-                document.getElementById("level-selection").onpointerup = () => {
-                    LevelSelection.Open();
-                };
-            }
-        });
+    static Open(guiTexture) {
+        let background = new BABYLON.GUI.Image("background", "./img/background.png");
+        guiTexture.addControl(background);
     }
 }
 class Page {

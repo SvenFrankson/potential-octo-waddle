@@ -1,18 +1,7 @@
 class MainMenu {
 
-    public static Open(): void {
-        $.ajax(
-            {
-                url: "./views/main-menu.html",
-                success: (data) => {
-                    Page.Clear();
-                    document.getElementById("page").innerHTML = data;
-
-                    document.getElementById("level-selection").onpointerup = () => {
-                        LevelSelection.Open();
-                    }
-                }
-            }
-        );
+    public static Open(guiTexture: BABYLON.GUI.AdvancedDynamicTexture): void {
+        let background: BABYLON.GUI.Image = new BABYLON.GUI.Image("background", "./img/background.png");
+        guiTexture.addControl(background);
     }
 }

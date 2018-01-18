@@ -100,8 +100,8 @@ class LevelInstance {
         if (this._level.values[j][i] === 0) {
             tx = Math.PI;
         }
-        t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k, 0, halfLength);
-        let s = BABYLON.MathTools.Clamp(this._k, 0, halfLength);
+        t.rotation.x = tx + Math.PI / halfLength * BABYLON.Scalar.Clamp(this._k, 0, halfLength);
+        let s = BABYLON.Scalar.Clamp(this._k, 0, halfLength);
         s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
         t.scaling.copyFromFloats(s, s, s);
         t.freezeWorldMatrix();
@@ -121,8 +121,8 @@ class LevelInstance {
                             if (this._level.values[j + l][i + k] === 0) {
                                 tx = Math.PI;
                             }
-                            t.rotation.x = tx + Math.PI / halfLength * BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
-                            let s = BABYLON.MathTools.Clamp(this._k - halfLength, 0, halfLength);
+                            t.rotation.x = tx + Math.PI / halfLength * BABYLON.Scalar.Clamp(this._k - halfLength, 0, halfLength);
+                            let s = BABYLON.Scalar.Clamp(this._k - halfLength, 0, halfLength);
                             s = 1 - (0.5 - Math.abs(s / halfLength - 0.5));
                             t.scaling.copyFromFloats(s, s, s);
                             t.freezeWorldMatrix();

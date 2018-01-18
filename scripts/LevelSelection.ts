@@ -25,7 +25,7 @@ class LevelSelection {
                     document.getElementById("page").innerHTML = data;
                     
                     document.getElementById("back-main-menu").onpointerup = () => {
-                        MainMenu.Open();
+                        MainMenu.Open(undefined);
                     }
 
                     this.populate();
