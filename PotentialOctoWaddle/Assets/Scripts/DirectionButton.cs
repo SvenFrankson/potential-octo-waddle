@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayButton : Button3D {
+public class DirectionButton : Button3D {
 
+	public ReversoState direction;
 
 	public void OnMouseDown() {
-		Debug.Log ("PlayButton Click");
+		Debug.Log ("DirectionButton Click");
 		ReversoCamera.Instance.GoTo(
 			0.5f,
-			ReversoState.LevelSelection,
+			this.direction,
 			() => {
 				
 			}

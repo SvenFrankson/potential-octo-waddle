@@ -25,7 +25,7 @@ public class LevelButton : Button3D {
 		Debug.Log ("LevelButton Click");
 		ReversoCamera.Instance.GoTo(
 			0.5f,
-			ReversoState.Play,
+			ReversoState.Level,
 			() => {
 				
 			}

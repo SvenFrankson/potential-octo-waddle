@@ -51,13 +51,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BackButton.cs" />
      <Compile Include="Assets\Scripts\Button3D.cs" />
+     <Compile Include="Assets\Scripts\DirectionButton.cs" />
      <Compile Include="Assets\Scripts\EmptyButton.cs" />
      <Compile Include="Assets\Scripts\LevelButton.cs" />
      <Compile Include="Assets\Scripts\LevelSelection.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
-     <Compile Include="Assets\Scripts\PlayButton.cs" />
      <Compile Include="Assets\Scripts\ReversoCamera.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />

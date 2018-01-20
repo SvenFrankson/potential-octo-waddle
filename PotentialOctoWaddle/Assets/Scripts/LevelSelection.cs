@@ -21,7 +21,7 @@ public class LevelSelection : MonoBehaviour {
 			for (int j = 0; j < 4; j++) {
 				GameObject icon = Instantiate<GameObject>(this.levelIconPrefab);
 				icon.transform.parent = this.transform;
-				icon.transform.localPosition = new Vector3(-1.5f + i, 1.3f - j, 0);
+				icon.transform.localPosition = new Vector3(-1.5f + i, 1.3f - j, 6);
 				icon.transform.localRotation = Quaternion.identity;
 				LevelButton button = icon.GetComponent<LevelButton>();
 				if (button) {

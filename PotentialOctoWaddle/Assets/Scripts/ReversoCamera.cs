@@ -6,7 +6,7 @@ using System;
 public enum ReversoState {
 	MainMenu,
 	LevelSelection,
-	Play
+	Level
 }
 public class ReversoCamera : MonoBehaviour {
 
@@ -26,6 +26,7 @@ public class ReversoCamera : MonoBehaviour {
 		this._positions = new Dictionary<ReversoState, Quaternion>();
 		this._positions.Add(ReversoState.MainMenu, Quaternion.identity);
 		this._positions.Add(ReversoState.LevelSelection, Quaternion.AngleAxis(90f, Vector3.up));
+		this._positions.Add(ReversoState.Level, Quaternion.AngleAxis(180f, Vector3.up));
 	}
 
 	public void GoTo(
