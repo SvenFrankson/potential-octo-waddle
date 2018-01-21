@@ -54,10 +54,12 @@
      <Compile Include="Assets\Scripts\Button3D.cs" />
      <Compile Include="Assets\Scripts\DirectionButton.cs" />
      <Compile Include="Assets\Scripts\EmptyButton.cs" />
+     <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\LevelButton.cs" />
      <Compile Include="Assets\Scripts\LevelSelection.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\ReversoCamera.cs" />
+     <Compile Include="Assets\Scripts\ReversoTile.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
