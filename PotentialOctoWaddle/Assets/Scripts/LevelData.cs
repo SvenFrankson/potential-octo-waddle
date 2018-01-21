@@ -1,6 +1,6 @@
 class LevelData {
-    public int width;
-    public int height;
-    public int[] initialValues;
-    public int best;
+    public int width = 1;
+    public int height = 1;
+    public int[] initialValues = new int[0];
+    public int best = 1;
 }
