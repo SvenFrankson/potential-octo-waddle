@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 public class Level : MonoBehaviour {
 
@@ -49,17 +50,28 @@ public class Level : MonoBehaviour {
 		int index,
 		Action callback = null
 	) {
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 4; i++) {
-				if (UnityEngine.Random.Range(0f, 1f) > 0.5f) {
-					this.tiles[j][i].InitializeState(true);
-				} else {
-					this.tiles[j][i].InitializeState(false);
+		LevelData data = null;
+		string filePath = Application.dataPath + "/Levels/" + index + ".json";
+		Debug.Log("Load level " + index + " at path " + filePath);
+
+        if (File.Exists (filePath)) {
+            string dataAsJson = File.ReadAllText (filePath);
+            data = JsonUtility.FromJson<LevelData> (dataAsJson);
+        }
+		if (data != null) {
+			Debug.Log(JsonUtility.ToJson(data));
+			for (int j = 0; j < 3; j++) {
+				for (int i = 0; i < 4; i++) {
+					if (data.initialValues[j * 4 + i] == 1) {
+						this.tiles[j][i].InitializeState(true);
+					} else {
+						this.tiles[j][i].InitializeState(false);
+					}
 				}
 			}
-		}
-		if (callback != null) {
-			callback();
+			if (callback != null) {
+				callback();
+			}
 		}
 	}
 }
