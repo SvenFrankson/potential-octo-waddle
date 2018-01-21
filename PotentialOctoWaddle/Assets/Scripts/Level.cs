@@ -52,6 +52,7 @@ public class Level : MonoBehaviour {
 		int index,
 		Action callback = null
 	) {
+		Victory.Instance.Hide();
 		LevelData data = null;
 		string filePath = Application.dataPath + "/Levels/" + index + ".json";
 		Debug.Log("Load level " + index + " at path " + filePath);
@@ -81,6 +82,7 @@ public class Level : MonoBehaviour {
 		this.turns ++;
 		if (this.CheckVictory()) {
 			Debug.Log("You win in " + this.turns + " turns (best is " + this.best + ")");
+			Victory.Instance.Show();
 		}
 	}
 	public bool CheckVictory() {
