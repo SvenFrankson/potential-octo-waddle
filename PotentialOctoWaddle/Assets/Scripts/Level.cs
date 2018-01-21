@@ -17,6 +17,7 @@ public class Level : MonoBehaviour {
 	}
 
 	public ReversoTile[][] tiles;
+	public TMPro.TextMeshPro title;
 	public int turns = 0;
 	public int best = 0;
 
@@ -62,6 +63,7 @@ public class Level : MonoBehaviour {
             data = JsonUtility.FromJson<LevelData> (dataAsJson);
         }
 		if (data != null) {
+			this.title.text = "LEVEL " + index;
 			this.turns = 0;
 			this.best = data.best;
 			for (int j = 0; j < 3; j++) {
@@ -75,6 +77,16 @@ public class Level : MonoBehaviour {
 			}
 			if (callback != null) {
 				callback();
+			}
+		}
+	}
+
+	public void Restart() {
+		Victory.Instance.Hide();
+		this.turns = 0;
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 4; i++) {
+				this.tiles[j][i].Restart();
 			}
 		}
 	}

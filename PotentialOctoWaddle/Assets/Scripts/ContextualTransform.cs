@@ -36,7 +36,9 @@ public class ContextualTransform : MonoBehaviour {
         this._rotations.Add(ReversoState.Level, this.LevelRotation);
         this._rotations.Add(ReversoState.Options, this.OptionsRotation);
         this._rotations.Add(ReversoState.About, this.AboutRotation);
-        this._rotations.Add(ReversoState.Licence, this.LicenceRotation);        
+        this._rotations.Add(ReversoState.Licence, this.LicenceRotation);
+        
+        this.GoTo(0f, ReversoState.MainMenu);
 	}
 
 	public void GoTo(

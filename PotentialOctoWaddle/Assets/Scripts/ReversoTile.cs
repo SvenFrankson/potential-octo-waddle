@@ -5,6 +5,7 @@ using System;
 
 public class ReversoTile : MonoBehaviour {
 
+    private bool initialState = true;
     public bool state = true;
     private Quaternion inRotation;
     private Quaternion outRotation;
@@ -19,6 +20,7 @@ public class ReversoTile : MonoBehaviour {
 
     public void InitializeState(Boolean state) {
         this.state = state;
+        this.initialState = state;
         if (this.state) {
             this.transform.localRotation = this.inRotation;
         } else {
@@ -127,4 +129,10 @@ public class ReversoTile : MonoBehaviour {
 		Debug.Log ("Tile Click");
 		this.Flip(true);
 	}
+
+    public void Restart() {
+        if (this.initialState != this.state) {
+            this.Flip(false);
+        }
+    }
 }
