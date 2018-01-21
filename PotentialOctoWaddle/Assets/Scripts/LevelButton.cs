@@ -15,6 +15,33 @@ public class LevelButton : Button3D {
 			this.textMesh.text = "" + this._index;
 		}
 	}
+	private int _score;
+	public int score {
+		get {
+			return this._score;
+		}
+		set {
+			this._score = value;
+			if (this._score >= 1) {
+				Renderer renderer = this.star1.GetComponent<Renderer>();
+				if (renderer) {
+					renderer.material = LevelSelection.Instance.yellowStar;
+				}
+			}
+			if (this._score >= 2) {
+				Renderer renderer = this.star2.GetComponent<Renderer>();
+				if (renderer) {
+					renderer.material = LevelSelection.Instance.yellowStar;
+				}
+			}
+			if (this._score >= 3) {
+				Renderer renderer = this.star3.GetComponent<Renderer>();
+				if (renderer) {
+					renderer.material = LevelSelection.Instance.yellowStar;
+				}
+			}
+		}
+	}
 
 	public TextMeshPro textMesh;
 	public GameObject star1;

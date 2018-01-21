@@ -15,6 +15,8 @@ public class LevelSelection : MonoBehaviour {
 	}
 
 	public GameObject levelIconPrefab;
+	public Material greyStar;
+	public Material yellowStar;
 
 	public void Start() {
 		for (int i = 0; i < 4; i++) {
@@ -27,6 +29,7 @@ public class LevelSelection : MonoBehaviour {
 				if (button) {
 					int index = i + j * 4 + 1;
 					button.index = index;
+					button.score = Random.Range(0, 4);
 				}
 			}
 		}
