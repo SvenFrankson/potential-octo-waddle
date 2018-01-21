@@ -43,6 +43,11 @@ public class ReversoTile : MonoBehaviour {
                             }
                         }
                     }
+                },
+                () => {
+                    if (isFirst) {
+                        this.level.OnTileFliped();
+                    }
                 }
             ));
         }
@@ -62,6 +67,11 @@ public class ReversoTile : MonoBehaviour {
                             }
                         }
                     }
+                },
+                () => {
+                    if (isFirst) {
+                        this.level.OnTileFliped();
+                    }
                 }
             ));
         }
@@ -74,6 +84,7 @@ public class ReversoTile : MonoBehaviour {
     ) {
 		float t0 = Time.timeSinceLevelLoad;
 		float dt = 0f;
+        this.state = true;
 		while (dt < duration) {
 			dt = Time.timeSinceLevelLoad - t0;
 			this.transform.localRotation = Quaternion.Slerp(this.outRotation, this.inRotation, dt / duration);
@@ -84,7 +95,6 @@ public class ReversoTile : MonoBehaviour {
 			yield return null;
 		}
         this.transform.localRotation = this.inRotation;
-        this.state = true;
         if (callback != null) {
             callback();
         }
@@ -97,6 +107,7 @@ public class ReversoTile : MonoBehaviour {
     ) {
 		float t0 = Time.timeSinceLevelLoad;
 		float dt = 0f;
+        this.state = false;
 		while (dt < duration) {
 			dt = Time.timeSinceLevelLoad - t0;
 			this.transform.localRotation = Quaternion.Slerp(this.inRotation, this.outRotation, dt / duration);
@@ -107,7 +118,6 @@ public class ReversoTile : MonoBehaviour {
 			yield return null;
 		}
         this.transform.localRotation = this.outRotation;
-        this.state = false;
         if (callback != null) {
             callback();
         }

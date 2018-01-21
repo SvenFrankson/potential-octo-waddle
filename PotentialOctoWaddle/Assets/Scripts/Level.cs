@@ -17,6 +17,8 @@ public class Level : MonoBehaviour {
 	}
 
 	public ReversoTile[][] tiles;
+	public int turns = 0;
+	public int best = 0;
 
 	public void Start() {
 		this.tiles = new ReversoTile[3][];
@@ -59,7 +61,7 @@ public class Level : MonoBehaviour {
             data = JsonUtility.FromJson<LevelData> (dataAsJson);
         }
 		if (data != null) {
-			Debug.Log(JsonUtility.ToJson(data));
+			this.best = data.best;
 			for (int j = 0; j < 3; j++) {
 				for (int i = 0; i < 4; i++) {
 					if (data.initialValues[j * 4 + i] == 1) {
@@ -73,5 +75,25 @@ public class Level : MonoBehaviour {
 				callback();
 			}
 		}
+	}
+
+	public void OnTileFliped() {
+		this.turns ++;
+		if (this.CheckVictory()) {
+			Debug.Log("You win in " + this.turns + " turns (best is " + this.best + ")");
+		}
+	}
+	public bool CheckVictory() {
+		Debug.Log("Check Victory");
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 4; i++) {
+				if (!this.tiles[j][i].state) {
+					Debug.Log("No Victory");
+					return false;
+				}
+			}
+		}
+		Debug.Log("Ok Victory");
+		return true;
 	}
 }
