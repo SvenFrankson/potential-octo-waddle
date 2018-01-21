@@ -17,6 +17,15 @@ public class ReversoTile : MonoBehaviour {
         this.outRotation = Quaternion.AngleAxis(180f, Vector3.right) * this.inRotation;
     }
 
+    public void InitializeState(Boolean state) {
+        this.state = state;
+        if (this.state) {
+            this.transform.localRotation = this.inRotation;
+        } else {
+            this.transform.localRotation = this.outRotation;
+        }
+    }
+
     public void Flip(bool isFirst) {
         if (this.state) {
             StartCoroutine(this.FlipOut(

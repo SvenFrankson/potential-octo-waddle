@@ -45,4 +45,21 @@ public class Level : MonoBehaviour {
 		}
 		return null;
 	}
+	public void Initialize(
+		int index,
+		Action callback = null
+	) {
+		for (int j = 0; j < 3; j++) {
+			for (int i = 0; i < 4; i++) {
+				if (UnityEngine.Random.Range(0f, 1f) > 0.5f) {
+					this.tiles[j][i].InitializeState(true);
+				} else {
+					this.tiles[j][i].InitializeState(false);
+				}
+			}
+		}
+		if (callback != null) {
+			callback();
+		}
+	}
 }
