@@ -31,7 +31,7 @@ public class ReversoTile : MonoBehaviour {
     public void Flip(bool isFirst) {
         if (this.state) {
             StartCoroutine(this.FlipOut(
-                1f,
+                0.5f,
                 () => {
                     if (isFirst) {
                         for (int i = -1; i <= 1; i++) {
@@ -55,7 +55,7 @@ public class ReversoTile : MonoBehaviour {
         }
         else {
             StartCoroutine(this.FlipIn(
-                1f,
+                0.5f,
                 () => {
                     if (isFirst) {
                         for (int i = -1; i <= 1; i++) {

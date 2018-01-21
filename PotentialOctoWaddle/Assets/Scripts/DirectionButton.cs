@@ -8,11 +8,17 @@ public class DirectionButton : Button3D {
 
 	public void OnMouseDown() {
 		Debug.Log ("DirectionButton Click");
-		ReversoCamera.Instance.GoTo(
-			0.5f,
-			this.direction,
+		this.Squish(
+			0.15f,
+			0.9f,
 			() => {
-				
+				ReversoCamera.Instance.GoTo(
+					0.5f,
+					this.direction,
+					() => {
+						
+					}
+				);
 			}
 		);
 	}

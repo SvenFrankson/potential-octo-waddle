@@ -6,6 +6,12 @@ public class RestartButton : Button3D {
 
 	public void OnMouseDown() {
 		Debug.Log ("RestartButton Click");
-		Level.Instance.Restart();
+        this.Squish(
+			0.15f,
+			0.9f,
+			() => {
+				Level.Instance.Restart();
+			}
+		);
 	}
 }

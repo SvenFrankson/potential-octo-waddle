@@ -50,12 +50,18 @@ public class LevelButton : Button3D {
 
 	public void OnMouseDown() {
 		Debug.Log ("LevelButton Click");
-		Level.Instance.Initialize(
-			this.index,
+		this.Squish(
+			0.15f,
+			0.9f,
 			() => {
-				ReversoCamera.Instance.GoTo(
-					0.5f,
-					ReversoState.Level
+				Level.Instance.Initialize(
+					this.index,
+					() => {
+						ReversoCamera.Instance.GoTo(
+							0.5f,
+							ReversoState.Level
+						);
+					}
 				);
 			}
 		);
