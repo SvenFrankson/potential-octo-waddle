@@ -22,6 +22,7 @@ public class ReversoCamera : MonoBehaviour {
 			return ReversoCamera._Instance;
 		}
 	}
+	public ContextualTransform[] stripes;
 
 	private Dictionary<ReversoState, Quaternion> _positions;
 
@@ -41,6 +42,9 @@ public class ReversoCamera : MonoBehaviour {
 		Action callback = null
 	) {
 		StartCoroutine(this.goToRoutine(duration, reversoState, callback));
+		for (int i = 0; i < this.stripes.Length; i++) {
+			this.stripes[i].GoTo(0.5f, reversoState);
+		}
 	}
 
 	private IEnumerator goToRoutine(

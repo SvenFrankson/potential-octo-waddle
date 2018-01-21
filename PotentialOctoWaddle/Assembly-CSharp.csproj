@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Button3D.cs" />
+     <Compile Include="Assets\Scripts\ContextualTransform.cs" />
      <Compile Include="Assets\Scripts\DirectionButton.cs" />
      <Compile Include="Assets\Scripts\EmptyButton.cs" />
      <Compile Include="Assets\Scripts\Level.cs" />
