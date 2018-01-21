@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 25595226}
   - component: {fileID: 25595225}
   m_Layer: 0
-  m_Name: StartStripe
+  m_Name: StarsStripe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2007,7 +2007,7 @@ GameObject:
   - component: {fileID: 444451594}
   - component: {fileID: 444451593}
   m_Layer: 0
-  m_Name: TurnStripe
+  m_Name: TurnsStripe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2833,7 +2833,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 728470180}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2845,7 +2845,7 @@ Transform:
   - {fileID: 1424922874}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &728470185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6659,8 +6659,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelIconPrefab: {fileID: 1590800977493920, guid: 363da432d3137d54da54e50430334f3f,
     type: 2}
-  greyStar: {fileID: 2100000, guid: b23145fc404575746a805431ed421112, type: 2}
-  yellowStar: {fileID: 2100000, guid: 4b6b195302472eb49b71d746c61ba92b, type: 2}
 --- !u!1 &1404972876
 GameObject:
   m_ObjectHideFlags: 0
@@ -6930,6 +6928,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1428605433}
+  - component: {fileID: 1428605434}
   m_Layer: 0
   m_Name: Victory
   m_TagString: Untagged
@@ -6944,7 +6943,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1428605432}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1228561894}
@@ -6958,6 +6957,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1428605434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1428605432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b86029c2e35344f9bf960ea2ac87d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  greyStar: {fileID: 2100000, guid: b23145fc404575746a805431ed421112, type: 2}
+  yellowStar: {fileID: 2100000, guid: 4b6b195302472eb49b71d746c61ba92b, type: 2}
+  titleStripe: {fileID: 1541298138}
+  titleText: {fileID: 1228561895}
+  turnsStripe: {fileID: 444451591}
+  turnsText: {fileID: 1351994653}
+  starsStripe: {fileID: 25595223}
+  star1: {fileID: 2036082031}
+  star2: {fileID: 227402282}
+  star3: {fileID: 953433170}
 --- !u!1 &1430580434
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 
 public class Victory : MonoBehaviour {
+	public Material greyStar;
+	public Material yellowStar;
     public GameObject titleStripe;
     private Vector3 titleStripeInPosition;
     public TMPro.TextMeshPro titleText;
@@ -12,6 +14,9 @@ public class Victory : MonoBehaviour {
     public TMPro.TextMeshPro turnsText;
     public GameObject starsStripe;
     private Vector3 starsStripeInPosition;
+    public Renderer star1;
+    public Renderer star2;
+    public Renderer star3;
 
 	public static Victory _Instance;
 	public static Victory Instance {
@@ -36,6 +41,30 @@ public class Victory : MonoBehaviour {
         this.starsStripe.transform.localPosition = new Vector3(10, 0, 0);
         this.titleText.transform.localScale = new Vector3(0, 0, 0);
         this.turnsText.transform.localScale = new Vector3(0, 0, 0);
+        this.star1.transform.localScale = new Vector3(0, 0, 0);
+        this.star2.transform.localScale = new Vector3(0, 0, 0);
+        this.star3.transform.localScale = new Vector3(0, 0, 0);
+    }
+    public void SetTurns(int turns) {
+        this.turnsText.text = "TURNS : " + turns;
+    }
+
+    public void SetScore(int score) {
+        if (score >= 1) {
+            this.star1.material = this.yellowStar;
+        } else {
+            this.star1.material = this.greyStar;
+        }
+        if (score >= 2) {
+            this.star2.material = this.yellowStar;
+        } else {
+            this.star2.material = this.greyStar;
+        }
+        if (score >= 3) {
+            this.star3.material = this.yellowStar;
+        } else {
+            this.star3.material = this.greyStar;
+        }
     }
 		
 	public void Show() {
@@ -60,7 +89,17 @@ public class Victory : MonoBehaviour {
                                         this.starsStripeInPosition,
                                         0.5f,
                                         () => {
-
+                                            StartCoroutine(this.Pop(
+                                                this.star1.gameObject, new Vector3(0.08f, 0.08f, 0.08f), 0.5f,
+                                                () => {
+                                                    StartCoroutine(this.Pop(
+                                                        this.star2.gameObject, new Vector3(0.1f, 0.1f, 0.1f), 0.5f,
+                                                        () => {
+                                                            StartCoroutine(this.Pop(this.star3.gameObject, new Vector3(0.08f, 0.08f, 0.08f), 0.5f));
+                                                        }
+                                                    ));
+                                                }
+                                            ));
                                         }
                                     )
                                 );

@@ -25,19 +25,19 @@ public class LevelButton : Button3D {
 			if (this._score >= 1) {
 				Renderer renderer = this.star1.GetComponent<Renderer>();
 				if (renderer) {
-					renderer.material = LevelSelection.Instance.yellowStar;
+					renderer.material = Victory.Instance.yellowStar;
 				}
 			}
 			if (this._score >= 2) {
 				Renderer renderer = this.star2.GetComponent<Renderer>();
 				if (renderer) {
-					renderer.material = LevelSelection.Instance.yellowStar;
+					renderer.material = Victory.Instance.yellowStar;
 				}
 			}
 			if (this._score >= 3) {
 				Renderer renderer = this.star3.GetComponent<Renderer>();
 				if (renderer) {
-					renderer.material = LevelSelection.Instance.yellowStar;
+					renderer.material = Victory.Instance.yellowStar;
 				}
 			}
 		}

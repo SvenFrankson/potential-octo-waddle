@@ -15,8 +15,6 @@ public class LevelSelection : MonoBehaviour {
 	}
 
 	public GameObject levelIconPrefab;
-	public Material greyStar;
-	public Material yellowStar;
 
 	public void Start() {
 		for (int i = 0; i < 4; i++) {

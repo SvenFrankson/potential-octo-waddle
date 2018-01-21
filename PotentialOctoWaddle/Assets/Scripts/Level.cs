@@ -62,6 +62,7 @@ public class Level : MonoBehaviour {
             data = JsonUtility.FromJson<LevelData> (dataAsJson);
         }
 		if (data != null) {
+			this.turns = 0;
 			this.best = data.best;
 			for (int j = 0; j < 3; j++) {
 				for (int i = 0; i < 4; i++) {
@@ -82,6 +83,8 @@ public class Level : MonoBehaviour {
 		this.turns ++;
 		if (this.CheckVictory()) {
 			Debug.Log("You win in " + this.turns + " turns (best is " + this.best + ")");
+			Victory.Instance.SetTurns(this.turns);
+			Victory.Instance.SetScore(this.GetScore());
 			Victory.Instance.Show();
 		}
 	}
@@ -97,5 +100,15 @@ public class Level : MonoBehaviour {
 		}
 		Debug.Log("Ok Victory");
 		return true;
+	}
+
+	public int GetScore() {
+		if (this.turns <= this.best) {
+			return 3;
+		} else if (this.turns <= this.best * 2) {
+			return 2;
+		} else {
+			return 1;
+		}
 	}
 }
