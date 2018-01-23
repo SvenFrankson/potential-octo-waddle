@@ -212,7 +212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 5
 --- !u!1 &4518094
 GameObject:
@@ -524,7 +523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 1
 --- !u!65 &40477533
 BoxCollider:
@@ -670,6 +668,47 @@ MonoBehaviour:
   level: {fileID: 0}
   I: 0
   J: 0
+--- !u!1 &192822521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 192822523}
+  - component: {fileID: 192822522}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &192822522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 192822521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 751f7a30ec139c84c8be2634457e571a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scores: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!4 &192822523
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 192822521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &205458413
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,7 +1033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e270e31b6beed94eaa4efe2a1a7618c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
 --- !u!1 &303914727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 4
 --- !u!33 &336253970
 MeshFilter:
@@ -2382,7 +2419,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e270e31b6beed94eaa4efe2a1a7618c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
 --- !u!1 &577483307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,7 +2597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 1
 --- !u!23 &600546773
 MeshRenderer:
@@ -2966,7 +3001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 0
 --- !u!1 &790544500
 GameObject:
@@ -3881,7 +3915,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 0
 --- !u!23 &1004468452
 MeshRenderer:
@@ -4642,7 +4675,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355dc0f1200146a47bfd20aa44bbe0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
 --- !u!1 &1137887463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4701,7 +4733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 0
 --- !u!23 &1137887467
 MeshRenderer:
@@ -6301,6 +6332,7 @@ MonoBehaviour:
   title: {fileID: 1850646829}
   turns: 0
   best: 0
+  index: 0
 --- !u!1 &1314819583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7463,7 +7495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e270e31b6beed94eaa4efe2a1a7618c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
 --- !u!1 &1434139514
 GameObject:
   m_ObjectHideFlags: 0
@@ -8839,7 +8870,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 0
 --- !u!23 &1645012642
 MeshRenderer:
@@ -10644,7 +10674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc00f6ea9d85fa4792fb7f184f5ca07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
   direction: 3
 --- !u!65 &1920617233
 BoxCollider:
@@ -11334,7 +11363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e270e31b6beed94eaa4efe2a1a7618c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axis: {x: 1, y: 0, z: 0}
 --- !u!1 &2112319740
 GameObject:
   m_ObjectHideFlags: 0
