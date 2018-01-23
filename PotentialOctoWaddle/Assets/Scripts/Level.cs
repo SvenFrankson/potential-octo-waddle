@@ -20,6 +20,7 @@ public class Level : MonoBehaviour {
 	public TMPro.TextMeshPro title;
 	public int turns = 0;
 	public int best = 0;
+	public int index = 0;
 
 	public void Start() {
 		this.tiles = new ReversoTile[3][];
@@ -64,6 +65,7 @@ public class Level : MonoBehaviour {
         }
 		if (data != null) {
 			this.title.text = "LEVEL " + index;
+			this.index = index;
 			this.turns = 0;
 			this.best = data.best;
 			for (int j = 0; j < 3; j++) {
@@ -95,6 +97,8 @@ public class Level : MonoBehaviour {
 		this.turns ++;
 		if (this.CheckVictory()) {
 			Debug.Log("You win in " + this.turns + " turns (best is " + this.best + ")");
+			ScoreManager.Instance.SetScore(this.index, this.GetScore());
+			LevelSelection.Instance.UpdateScore(this.index);
 			Victory.Instance.SetTurns(this.turns);
 			Victory.Instance.SetScore(this.GetScore());
 			Victory.Instance.Show();

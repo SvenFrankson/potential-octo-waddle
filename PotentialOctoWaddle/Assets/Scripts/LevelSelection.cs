@@ -15,6 +15,7 @@ public class LevelSelection : MonoBehaviour {
 	}
 
 	public GameObject levelIconPrefab;
+	private Dictionary<int, LevelButton> buttons = new Dictionary<int, LevelButton>();
 
 	public void Start() {
 		for (int i = 0; i < 4; i++) {
@@ -26,10 +27,16 @@ public class LevelSelection : MonoBehaviour {
 				LevelButton button = icon.GetComponent<LevelButton>();
 				if (button) {
 					int index = i + j * 4 + 1;
+					this.buttons.Add(index, button);
 					button.index = index;
-					button.score = Random.Range(0, 4);
+					Debug.Log("Index = " + index + " Score = " + ScoreManager.Instance.GetScore(index));
+					button.score = ScoreManager.Instance.GetScore(index);
 				}
 			}
 		}
+	}
+
+	public void UpdateScore(int index) {
+		this.buttons[index].score = ScoreManager.Instance.GetScore(index);
 	}
 }
