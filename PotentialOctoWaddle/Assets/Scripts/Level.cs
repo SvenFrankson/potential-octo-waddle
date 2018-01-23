@@ -56,7 +56,7 @@ public class Level : MonoBehaviour {
 	) {
 		Victory.Instance.Hide();
 		LevelData data = null;
-		string filePath = Application.dataPath + "/Levels/" + index + ".json";
+		string filePath = Application.dataPath + "/Resources/Levels/" + index + ".json";
 		Debug.Log("Load level " + index + " at path " + filePath);
 
         if (File.Exists (filePath)) {
