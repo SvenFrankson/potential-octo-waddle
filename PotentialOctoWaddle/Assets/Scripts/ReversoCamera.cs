@@ -25,6 +25,8 @@ public class ReversoCamera : MonoBehaviour {
 	public ContextualTransform[] stripes;
 
 	private Dictionary<ReversoState, Quaternion> _positions;
+	public float minimalVerticalFov;
+	public float minimalHorizontalFov;
 
 	public void Start() {
 		this._positions = new Dictionary<ReversoState, Quaternion>();
@@ -34,6 +36,21 @@ public class ReversoCamera : MonoBehaviour {
 		this._positions.Add(ReversoState.Options, Quaternion.AngleAxis(270f, Vector3.up));
 		this._positions.Add(ReversoState.Licence, Quaternion.AngleAxis(-90f, Vector3.right));
 		this._positions.Add(ReversoState.About, Quaternion.AngleAxis(90f, Vector3.right));
+
+		this.Resize();
+	}
+
+	public void Resize() {
+		Camera camera = this.GetComponent<Camera>();
+		if (camera) {
+			if (camera.fieldOfView < this.minimalVerticalFov) {
+				camera.fieldOfView = this.minimalVerticalFov;
+			}
+			float horizontalFov = 2f * Mathf.Atan(((float) Screen.width) / Screen.height * Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad / 2f)) * Mathf.Rad2Deg;
+			if (horizontalFov < this.minimalHorizontalFov) {
+				camera.fieldOfView = 2f * Mathf.Atan(((float) Screen.height) / Screen.width * Mathf.Tan(this.minimalHorizontalFov * Mathf.Deg2Rad / 2f)) * Mathf.Rad2Deg;
+			}
+		}
 	}
 
 	public void GoTo(
