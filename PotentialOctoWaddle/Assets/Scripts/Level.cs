@@ -56,13 +56,10 @@ public class Level : MonoBehaviour {
 	) {
 		Victory.Instance.Hide();
 		LevelData data = null;
-		string filePath = Application.dataPath + "/Resources/Levels/" + index + ".json";
-		Debug.Log("Load level " + index + " at path " + filePath);
-
-        if (File.Exists (filePath)) {
-            string dataAsJson = File.ReadAllText (filePath);
-            data = JsonUtility.FromJson<LevelData> (dataAsJson);
-        }
+		TextAsset dataAsText = Resources.Load<TextAsset>("Levels/" + index);
+		if (dataAsText) {
+            data = JsonUtility.FromJson<LevelData> (dataAsText.text);
+		}
 		if (data != null) {
 			this.title.text = "LEVEL " + index;
 			this.index = index;

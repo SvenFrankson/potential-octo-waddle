@@ -26,7 +26,7 @@ public class ScoreManager : MonoBehaviour {
 
 	private void read() {
 		ScoreData data = null;
-		string filePath = Application.dataPath + "/Scores/scoreData.json";
+		string filePath = Application.persistentDataPath + "/Scores/scoreData.json";
 		Debug.Log("Load scores at path " + filePath);
 
         if (File.Exists (filePath)) {
@@ -40,7 +40,10 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	private void write(ScoreData data) {
-		string filePath = Application.dataPath + "/Scores/scoreData.json";
+		if (!Directory.Exists(Application.persistentDataPath + "/Scores")) {
+			Directory.CreateDirectory(Application.persistentDataPath + "/Scores");
+		}
+		string filePath = Application.persistentDataPath + "/Scores/scoreData.json";
 		Debug.Log("Save scores at path " + filePath);
 		string dataAsJson = JsonUtility.ToJson(data);
         File.WriteAllText(filePath, dataAsJson);
