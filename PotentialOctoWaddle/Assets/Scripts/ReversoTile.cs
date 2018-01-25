@@ -29,6 +29,7 @@ public class ReversoTile : MonoBehaviour {
     }
 
     public void Flip(bool isFirst) {
+        this.level.Lock();
         if (this.state) {
             StartCoroutine(this.FlipOut(
                 0.5f,
@@ -47,6 +48,7 @@ public class ReversoTile : MonoBehaviour {
                     }
                 },
                 () => {
+                    this.level.UnLock();
                     if (isFirst) {
                         this.level.OnTileFliped();
                     }
@@ -71,6 +73,7 @@ public class ReversoTile : MonoBehaviour {
                     }
                 },
                 () => {
+                    this.level.UnLock();
                     if (isFirst) {
                         this.level.OnTileFliped();
                     }
@@ -126,6 +129,9 @@ public class ReversoTile : MonoBehaviour {
 	}
 
     public void OnMouseDown() {
+        if (this.level.IsLocked()) {
+            return;
+        }
 		Debug.Log ("Tile Click");
 		this.Flip(true);
 	}

@@ -21,6 +21,7 @@ public class Level : MonoBehaviour {
 	public int turns = 0;
 	public int best = 0;
 	public int index = 0;
+	private int locks = 0;
 
 	public void Start() {
 		this.tiles = new ReversoTile[3][];
@@ -42,6 +43,17 @@ public class Level : MonoBehaviour {
 		}
 	}
 
+	public void Lock() {
+		this.locks++;
+	}
+
+	public void UnLock() {
+		this.locks--;
+	}
+	public bool IsLocked() {
+		return this.locks != 0;
+	}
+
 	public ReversoTile GetTile(int j, int i) {
 		if (j >= 0 && j < this.tiles.Length) {
 			if (i >= 0 && i < this.tiles[j].Length) {
@@ -61,6 +73,7 @@ public class Level : MonoBehaviour {
             data = JsonUtility.FromJson<LevelData> (dataAsText.text);
 		}
 		if (data != null) {
+			this.locks = 0;
 			this.title.text = "LEVEL " + index;
 			this.index = index;
 			this.turns = 0;
