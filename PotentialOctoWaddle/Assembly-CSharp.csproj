@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Button3D.cs" />
      <Compile Include="Assets\Scripts\ContextualTransform.cs" />
      <Compile Include="Assets\Scripts\DirectionButton.cs" />
+     <Compile Include="Assets\Scripts\Easing.cs" />
      <Compile Include="Assets\Scripts\EmptyButton.cs" />
      <Compile Include="Assets\Scripts\Level.cs" />
      <Compile Include="Assets\Scripts\LevelButton.cs" />
