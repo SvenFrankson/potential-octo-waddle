@@ -7,16 +7,11 @@ public class ReversoTile : MonoBehaviour {
 
     private bool initialState = true;
     public bool state = true;
-    private Quaternion inRotation;
-    private Quaternion outRotation;
+    private Quaternion inRotation = Quaternion.identity;
+    private Quaternion outRotation = Quaternion.AngleAxis(180f, Vector3.right);
     public Level level;
     public int I;
     public int J;
-
-    public void Start() {
-        this.inRotation = this.transform.localRotation;
-        this.outRotation = Quaternion.AngleAxis(180f, Vector3.right) * this.inRotation;
-    }
 
     public void InitializeState(Boolean state) {
         this.state = state;

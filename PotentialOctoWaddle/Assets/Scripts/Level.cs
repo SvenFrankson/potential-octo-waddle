@@ -16,32 +16,24 @@ public class Level : MonoBehaviour {
 		}
 	}
 
+	private Transform _tileContainer;
+	private Transform tileContainer {
+		get {
+			if (!this._tileContainer) {
+				this._tileContainer = GameObject.Find("TileContainer").transform;
+			}
+			return this._tileContainer;
+		}
+	}
+	public GameObject tilePrefab;
 	public ReversoTile[][] tiles;
 	public TMPro.TextMeshPro title;
 	public int turns = 0;
 	public int best = 0;
 	public int index = 0;
 	private int locks = 0;
-
-	public void Start() {
-		this.tiles = new ReversoTile[3][];
-		for (int j = 0; j < 3; j++) {
-			this.tiles[j] = new ReversoTile[4];
-			for (int i = 0; i < 4; i++) {
-				GameObject g = GameObject.Find("Tile-" + j + "-" + i);
-				ReversoTile tile = g.GetComponent<ReversoTile>();
-				if (tile != null) {
-					Debug.Log("Tile-" + j + "-" + i + " found");
-					tile.level = this;
-					tile.I = i;
-					tile.J = j;
-					this.tiles[j][i] = tile;
-				} else {
-					Debug.LogError("Tile-" + j + "-" + i + " not found");
-				}
-			}
-		}
-	}
+	private int width = 1;
+	private int height = 1;
 
 	public void Lock() {
 		this.locks++;
@@ -67,23 +59,35 @@ public class Level : MonoBehaviour {
 		Action callback = null
 	) {
 		Victory.Instance.Hide();
+		if (this.tiles != null) {
+			for (int j = 0; j < this.tiles.Length; j++) {
+				for (int i = 0; i < this.tiles[j].Length; i++) {
+					GameObject.Destroy(this.tiles[j][i].gameObject);
+				}
+			}
+		}
 		LevelData data = null;
 		TextAsset dataAsText = Resources.Load<TextAsset>("Levels/" + index);
 		if (dataAsText) {
             data = JsonUtility.FromJson<LevelData> (dataAsText.text);
 		}
 		if (data != null) {
+			this.width = data.width;
+			this.height = data.height;
+			this.InstantiateTiles(this.width, this.height);
 			this.locks = 0;
 			this.title.text = "LEVEL " + index;
 			this.index = index;
 			this.turns = 0;
 			this.best = data.best;
-			for (int j = 0; j < 3; j++) {
-				for (int i = 0; i < 4; i++) {
-					if (data.initialValues[j * 4 + i] == 1) {
+			for (int j = 0; j < this.height; j++) {
+				for (int i = 0; i < this.width; i++) {
+					if (data.initialValues[j * this.width + i] == 1) {
 						this.tiles[j][i].InitializeState(true);
+						Debug.Log("TRUE");
 					} else {
 						this.tiles[j][i].InitializeState(false);
+						Debug.Log("FALSE");
 					}
 				}
 			}
@@ -93,11 +97,31 @@ public class Level : MonoBehaviour {
 		}
 	}
 
+	public void InstantiateTiles(int width, int height) {
+		float s = Mathf.Min(3.5f / width, 4f / height);
+		Debug.Log("S = " + s);
+		this.tiles = new ReversoTile[height][];
+		for (int j = 0; j < height; j++) {
+			this.tiles[j] = new ReversoTile[width];
+			for (int i = 0; i < width; i++) {
+				GameObject instance = GameObject.Instantiate<GameObject>(this.tilePrefab);
+				instance.transform.parent = this.tileContainer;
+				instance.transform.localPosition = s * (new Vector3(- (width - 1f) / 2f + i, (height - 1f) / 2f - j, 0f));
+				instance.transform.localScale = 0.95f * (new Vector3(s, s, s));
+				ReversoTile tile = instance.GetComponent<ReversoTile>();
+				tile.level = this;
+				tile.I = i;
+				tile.J = j;
+				this.tiles[j][i] = tile;
+			}
+		}
+	}
+
 	public void Restart() {
 		Victory.Instance.Hide();
 		this.turns = 0;
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < this.height; j++) {
+			for (int i = 0; i < this.width; i++) {
 				this.tiles[j][i].Restart();
 			}
 		}
@@ -116,8 +140,8 @@ public class Level : MonoBehaviour {
 	}
 	public bool CheckVictory() {
 		Debug.Log("Check Victory");
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < this.height; j++) {
+			for (int i = 0; i < this.width; i++) {
 				if (!this.tiles[j][i].state) {
 					Debug.Log("No Victory");
 					return false;
