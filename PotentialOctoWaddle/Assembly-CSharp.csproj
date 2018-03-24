@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\RestartButton.cs" />
      <Compile Include="Assets\Scripts\ReversoCamera.cs" />
+     <Compile Include="Assets\Scripts\ReversoLight.cs" />
      <Compile Include="Assets\Scripts\ReversoTile.cs" />
      <Compile Include="Assets\Scripts\ScoreManager.cs" />
      <Compile Include="Assets\Scripts\Victory.cs" />

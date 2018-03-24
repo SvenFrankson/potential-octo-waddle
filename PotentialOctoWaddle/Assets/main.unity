@@ -5947,6 +5947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424922874}
   - component: {fileID: 1424922873}
+  - component: {fileID: 1424922875}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -5996,13 +5997,29 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1424922872}
-  m_LocalRotation: {x: -0.10938163, y: -0.8754261, z: 0.40821788, w: -0.23456968}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.5, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 728470184}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1424922875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1424922872}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b4473c36b8cb04ab2135a9d0fb22ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 5
+  duration: 0.5
+  positions:
+  - {x: 2.5, y: 2.5, z: 0}
+  - {x: -2.5, y: -2.5, z: 0}
 --- !u!1 &1428605432
 GameObject:
   m_ObjectHideFlags: 0
