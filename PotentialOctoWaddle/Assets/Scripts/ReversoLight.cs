@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class ReversoLight : MonoBehaviour {
 
-	private Light _light;
-	private Light light {
-		get {
-			if (this._light == null) {
-				this._light = this.GetComponent<Light>();
-			}
-			return this._light;
-		}
-	}
-
 	public float delay;
 	public float duration;
 	public Vector3[] positions;
@@ -45,11 +35,11 @@ public class ReversoLight : MonoBehaviour {
 		while (dt < duration) {
 			dt = Time.timeSinceLevelLoad - t0;
 			this.transform.localPosition = Vector3.Slerp(initialPosition, targetPosition, Easing.Square(dt / this.duration));
-			this.light.intensity = Mathf.Abs(1f - dt / this.duration * 2) / 2f + 0.5f;
+			this.GetComponent<Light>().intensity = Mathf.Abs(1f - dt / this.duration * 2) / 2f + 0.5f;
 			yield return null;
 		}
 		this.isMoving = false;
 		this.transform.localPosition = targetPosition;
-		this.light.intensity = 1f;
+		this.GetComponent<Light>().intensity = 1f;
 	}
 }
