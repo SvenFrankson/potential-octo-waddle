@@ -109,10 +109,25 @@ public class Level : MonoBehaviour {
 				instance.transform.localPosition = s * (new Vector3(- (width - 1f) / 2f + i, (height - 1f) / 2f - j, 0f));
 				instance.transform.localScale = 0.95f * (new Vector3(s, s, s));
 				ReversoTile tile = instance.GetComponent<ReversoTile>();
-				tile.level = this;
-				tile.I = i;
-				tile.J = j;
-				this.tiles[j][i] = tile;
+				if (tile != null) {
+					tile.level = this;
+					tile.I = i;
+					tile.J = j;
+					this.tiles[j][i] = tile;
+				}
+				Transform pictureInstance = instance.transform.Find("Picture");
+				if (pictureInstance != null) {
+					MeshFilter meshFilter = pictureInstance.GetComponent<MeshFilter>();
+					if (meshFilter != null) {
+						Mesh mesh = meshFilter.mesh;
+						List<Vector2> uvs = new List<Vector2>();
+						uvs.Add(new Vector2(i / (float) width, j / (float) height));
+						uvs.Add(new Vector2(i / (float) width, (j + 1) / (float) height));
+						uvs.Add(new Vector2((i + 1) / (float) width, (j + 1) / (float) height));
+						uvs.Add(new Vector2((i + 1) / (float) width, j / (float) height));
+						mesh.SetUVs(0, uvs);
+					}
+				}
 			}
 		}
 	}
