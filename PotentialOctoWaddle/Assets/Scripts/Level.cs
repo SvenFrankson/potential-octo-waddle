@@ -74,7 +74,7 @@ public class Level : MonoBehaviour {
 		if (data != null) {
 			this.width = data.width;
 			this.height = data.height;
-			this.InstantiateTiles(this.width, this.height);
+			this.InstantiateTiles(data);
 			this.locks = 0;
 			this.title.text = "LEVEL " + index;
 			this.index = index;
@@ -97,16 +97,16 @@ public class Level : MonoBehaviour {
 		}
 	}
 
-	public void InstantiateTiles(int width, int height) {
-		float s = Mathf.Min(3.5f / width, 4f / height);
+	public void InstantiateTiles(LevelData data) {
+		float s = Mathf.Min(3.5f / data.width, 4f / data.height);
 		Debug.Log("S = " + s);
-		this.tiles = new ReversoTile[height][];
-		for (int j = 0; j < height; j++) {
-			this.tiles[j] = new ReversoTile[width];
-			for (int i = 0; i < width; i++) {
+		this.tiles = new ReversoTile[data.height][];
+		for (int j = 0; j < data.height; j++) {
+			this.tiles[j] = new ReversoTile[data.width];
+			for (int i = 0; i < data.width; i++) {
 				GameObject instance = GameObject.Instantiate<GameObject>(this.tilePrefab);
 				instance.transform.parent = this.tileContainer;
-				instance.transform.localPosition = s * (new Vector3(- (width - 1f) / 2f + i, (height - 1f) / 2f - j, 0f));
+				instance.transform.localPosition = s * (new Vector3(- (data.width - 1f) / 2f + i, (data.height - 1f) / 2f - j, 0f));
 				instance.transform.localScale = 0.95f * (new Vector3(s, s, s));
 				ReversoTile tile = instance.GetComponent<ReversoTile>();
 				if (tile != null) {
@@ -121,10 +121,36 @@ public class Level : MonoBehaviour {
 					if (meshFilter != null) {
 						Mesh mesh = meshFilter.mesh;
 						List<Vector2> uvs = new List<Vector2>();
-						uvs.Add(new Vector2(i / (float) width, j / (float) height));
-						uvs.Add(new Vector2(i / (float) width, (j + 1) / (float) height));
-						uvs.Add(new Vector2((i + 1) / (float) width, (j + 1) / (float) height));
-						uvs.Add(new Vector2((i + 1) / (float) width, j / (float) height));
+						uvs.Add(new Vector2(
+							data.picOffsetX / 4f + i / 4f / (float) data.step,
+							1f - data.picOffsetY / 3f - (j + 1) / 3f / (float) data.step
+						));
+						uvs.Add(new Vector2(
+							data.picOffsetX / 4f + i / 4f / (float) data.step,
+							1f - data.picOffsetY / 3f - j / 3f / (float) data.step
+						));
+						uvs.Add(new Vector2(
+							data.picOffsetX / 4f + (i + 1) / 4f / (float) data.step,
+							1f - data.picOffsetY / 3f - j / 3f / (float) data.step
+						));
+						uvs.Add(new Vector2(
+							data.picOffsetX / 4f + (i + 1) / 4f / (float) data.step,
+							1f - data.picOffsetY / 3f - (j + 1) / 3f / (float) data.step
+						));
+						/*
+						uvs.Add(new Vector2(
+							0, 0
+						));
+						uvs.Add(new Vector2(
+							0, 1
+						));
+						uvs.Add(new Vector2(
+							1, 1
+						));
+						uvs.Add(new Vector2(
+							1, 0
+						));
+						*/
 						mesh.SetUVs(0, uvs);
 					}
 				}
